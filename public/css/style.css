@@ -1,0 +1,88 @@
+:root {
+    --hsr-ylw : #f7e541;
+}
+
+body{
+    margin: 0;
+}
+
+.header {
+    background: black;
+    font-size: 2rem;
+    min-height: 50px;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.raccoon{
+    background-image: url(../assets/raccoon.png);
+    height: 100%;
+    width: 70px;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.dash-title {
+    padding: 1rem;
+    margin: 0;
+    font-family: "Playfair Display";
+    color: var(--hsr-ylw);
+}
+
+.storebtn {
+    padding: 0.5rem;
+    text-align: center;
+    background-color: var(--hsr-ylw);
+}
+
+.storebtn:hover {
+    background-color: #cdbe32;
+    cursor: pointer;
+}
+
+.flex-container div{
+    max-width: 30%;
+}
+.flex-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;    
+}
+#map { 
+    height: 100%; 
+    width: 100%;
+}
+.map-container {
+    height:700px;
+}
+.data_response {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+.foodItem, .foodItemCat {
+    display: flex;
+    border: 1px solid #dadada;
+    border-radius: 0.25rem;
+    flex: 0 1 auto;
+    flex-direction: column;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+    padding: 0.25rem;
+}
+
+.foodItem:hover, .foodItemCat:hover {
+    backdrop-filter: brightness(0.9);
+    cursor: pointer;
+}
+
+.welcome-msg{
+    width: 70%;
+    display: block;
+    margin: auto;
+}

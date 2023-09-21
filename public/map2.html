@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      <!-- Load jQuery and PapaParse to read data from a CSV file -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+     <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+    integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+    crossorigin=""></script>
+
+
+
+
+
+    
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div class="data_response">
+      <h4>Click on the map to get started</h4>
+    </div>
+
+
+
+
+
+
+<script>
+//map stuff for Leaflet
+var map = L.map('map').setView([43.7440736,-79.4180339], 10);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+
+let rows = [];
+
+setInterval(function() {   map.invalidateSize(); }, 100)
+
+$.get('/mapdata/stores.csv', function(csvString) {
+
+// Use PapaParse to convert string to array of objects
+var data = Papa.parse(csvString, {header: true, dynamicTyping: true}).data;
+console.log(data.length)
+
+
+// For each row in data, create a marker and add it to the map
+// For each row, columns `Latitude`, `Longitude`, and `Title` are required
+for (var i in data) {
+  var row = data[i];
+  console.log(data[i].lat)
+  let store;
+  if (row.companyID==2){
+    store="Loblaws";
+  } else if(row.companyID==3) {
+    store = 'No Frills'
+  } else if(row.companyID==5) {
+    store = 'Real Canadian Superstore'
+  } else {
+    store = "";
+  }
+  if (data[i].lat == 'nan' || data[i].lat == 'null') {
+    console.log('nan')
+  } else {
+    var marker = L.marker([row.storeLat, row.storeLong], {
+    opacity: 1
+    }).bindPopup("<h5 class='popup-title'> " + store + " - " + row.storeName + "</h5>" +
+                    "<div>Address: " +row.storeAddress + "</div>" + 
+                    "<div>Postal Code: " + row.storePostalCode +"</div>"+
+                    "<div class='storebtn' onclick='storeCategory(" +row.storeID+ ")'>See Data</div>");
+  
+  marker.addTo(map);
+  }
+ 
+}
+
+});
+</script>
+<script src="/js/scripts.js"></script>
+</body>
+</html>
