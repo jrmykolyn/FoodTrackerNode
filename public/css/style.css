@@ -31,6 +31,7 @@ body{
     margin: 0;
     font-family: "Playfair Display";
     color: var(--hsr-ylw);
+    text-align: center;
 }
 
 .storebtn {
@@ -85,4 +86,16 @@ body{
     width: 70%;
     display: block;
     margin: auto;
+}
+
+
+.mb-div {
+    margin-bottom:2rem;
+}
+
+@media only screen and (max-width: 768px) {
+
+	.map-container {
+    		height: 250px;
+	}
 }
