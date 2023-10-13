@@ -1,20 +1,13 @@
 "use strict"
 
 
-//https://github.com/renelikestacos/Web-Mapping-Leaflet-NodeJS-Tutorials
 const express = require('express');
 const mysql = require('mysql2/promise');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const foodRoutes = require('./routes/foodRoutes')
 const app = express();
-
-// Middleware
-//app.use(bodyParser.urlencoded({ extended: true }));
-//app.use(bodyParser.json());
-
-// Create a MySQL connection pool
-//const pool = mysql.createPool(db);
+const chart = require('./controllers/chartController')
 
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
@@ -38,6 +31,10 @@ app.get('/map', (req, res) => {
 
 app.get('/news', (req, res) => {
     res.render('news')
+})
+
+app.get('/pricehist', (req, res) => {
+    res.render('pricehist')
 })
 
 // Start the server

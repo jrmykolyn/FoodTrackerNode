@@ -11,9 +11,12 @@ router.get('/stores', foodController.getStores);
 
 router.get('/stores/:id', foodController.getStoreByID);
 
-
 router.get('/prices/:id', foodController.getStorePrices);
 
 router.get('/prices/:id/:foodname', foodController.getStorePriceByName);
+
+router.get('/pricehistory/:storeID/:foodID', foodController.getPriceHistory);
+
+router.get('/pricecompare/:id/:foodname', foodController.getPriceCompare);
 
 module.exports = router;

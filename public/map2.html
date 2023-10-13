@@ -14,23 +14,13 @@
     integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
     crossorigin=""></script>
 
-
-
-
-
-    
     <div class="map-container">
         <div id="map"></div>
     </div>
-
+    <div class="storeAmt"></div>
     <div class="data_response">
       <h4>Click on the map to get started</h4>
     </div>
-
-
-
-
-
 
 <script>
 //map stuff for Leaflet
@@ -45,12 +35,13 @@ let rows = [];
 
 setInterval(function() {   map.invalidateSize(); }, 100)
 
-$.get('/mapdata/stores.csv', function(csvString) {
+$.get('/mapdata/stores-temp.csv', function(csvString) {
 
 // Use PapaParse to convert string to array of objects
 var data = Papa.parse(csvString, {header: true, dynamicTyping: true}).data;
-console.log(data.length)
-
+let storeAmt = data.length;
+let storeAmtDisp = document.querySelector('.storeAmt');
+storeAmtDisp.textContent = `Displaying data from ${storeAmt} stores`;
 
 // For each row in data, create a marker and add it to the map
 // For each row, columns `Latitude`, `Longitude`, and `Title` are required
@@ -67,18 +58,23 @@ for (var i in data) {
   } else {
     store = "";
   }
-  if (data[i].lat == 'nan' || data[i].lat == 'null') {
-    console.log('nan')
-  } else {
-    var marker = L.marker([row.storeLat, row.storeLong], {
-    opacity: 1
-    }).bindPopup("<h5 class='popup-title'> " + store + " - " + row.storeName + "</h5>" +
+  try {
+      if (data[i].lat == 'nan' || data[i].lat == 'null') {
+      console.log('nan')
+      } else {
+      var marker = L.marker([row.storeLat, row.storeLong], {
+      opacity: 1
+      }).bindPopup("<h5 class='popup-title'> " + store + " - " + row.storeName + "</h5>" +
                     "<div>Address: " +row.storeAddress + "</div>" + 
                     "<div>Postal Code: " + row.storePostalCode +"</div>"+
                     "<div class='storebtn' onclick='storeCategory(" +row.storeID+ ")'>See Data</div>");
   
-  marker.addTo(map);
+    marker.addTo(map);
+    }
+  } catch {
+    console.log(`error with item ${data[i]}`)
   }
+
  
 }
 

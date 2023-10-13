@@ -1,13 +1,15 @@
 :root {
     --hsr-ylw : #f7e541;
+    --hsr-blk : #0d0d0d;
 }
 
-body{
+body {
     margin: 0;
+    font-family: arial;
 }
 
 .header {
-    background: black;
+    background: var(--hsr-blk);
     font-size: 2rem;
     min-height: 50px;
     width: 100%;
@@ -15,6 +17,10 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.header-link {
+    text-decoration: none;
 }
 
 .raccoon{
@@ -58,7 +64,7 @@ body{
     width: 100%;
 }
 .map-container {
-    height:700px;
+    height:500px;
 }
 .data_response {
     display: flex;
@@ -82,15 +88,73 @@ body{
     cursor: pointer;
 }
 
+.popup-title, .foodItem div:nth-of-type(1) {
+    font-weight: 600;
+}
+
 .welcome-msg{
     width: 70%;
     display: block;
     margin: auto;
 }
 
-
 .mb-div {
     margin-bottom:2rem;
+}
+
+/*Dashboard UI */
+
+.dash-flex {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.dash-flex a {
+    flex: 1 1 400px;
+    text-decoration: none;
+}
+
+.dash-flex .m-href{
+    flex: 2 1 700px;
+}
+
+.map-link, .news-link {
+    padding: 1rem;
+    background-color: var(--hsr-ylw);
+    color: var(--hsr-blk);
+    border-radius: 0.25rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    font-size: 1.25rem;
+}
+
+.map-link:hover, .news-link:hover {
+    filter:brightness(0.8);
+}
+
+.map-link i, .news-link i {
+    font-size: 2rem;
+}
+
+.storeAmt{
+    padding: 0.5rem;
+    text-align: center;
+}
+
+
+/*chart*/
+.chartTitle {
+    text-align:center;
+}
+
+.chartDiv {
+    display: block;
+    margin: auto;
 }
 
 @media only screen and (max-width: 768px) {
@@ -98,4 +162,9 @@ body{
 	.map-container {
     		height: 250px;
 	}
+
+	.raccoon {
+		display: none;
+	}
+
 }

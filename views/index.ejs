@@ -5,6 +5,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"> 
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,14 +26,39 @@
                 That's why we're so proud to present the live beta of The Hoser's Food Price Tracking Project. With this dashboard, you'll be able to find the cheapest grocery stores in the city. 
                 As we work towards that goal, we thought we'd provide you with the data we are tracking from grocery stores across the city. 
             </p>
-        <div>
-            <a href="/map">See the map</a>
+        <div class="dash-flex">
+            <a href="/map" class="m-href">
+                <div class="map-link">
+                    <i class='bx bx-cart-add' ></i>
+                    <h4>See The Map</h4>
+                </div>
+            </a>
+            <a href="https://www.thehoser.ca/posts/introducing-the-grocery-tracker">
+                <div class="news-link">
+                    <i class='bx bx-news' ></i>
+                    <h4>Grocery Tracker Stories</h4>
+                </div>
+            </a>
+            <a target="_blank" href="https://www.thehoser.ca/newsletter">
+                <div class="news-link">
+                    <i class='bx bxs-paper-plane' ></i>
+                    <h4>Get Grocery Updates</h4>
+                </div>
+            </a>
+            <a target="_blank" href="https://thehoser.ca">
+                <div class="news-link">
+                    <i class='bx bx-book-reader'></i>
+                    <h4>Read more from The Hoser</h4>
+                </div>
+            </a>
         </div>
         <!--<div>
             <a href="/news">Read the stories</a>
         </div>-->
     </div>
-
+  
     </div>
+    <script src="js/scripts.js"></script>
+
 </body>
 </html>
