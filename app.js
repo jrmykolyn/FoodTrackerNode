@@ -7,7 +7,6 @@ const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const foodRoutes = require('./routes/foodRoutes')
 const app = express();
-const chart = require('./controllers/chartController')
 
 // Set the view engine to EJS
 app.set('view engine', 'ejs');

@@ -37,8 +37,6 @@ async function getPriceHistory(storeID,foodID) {
                                     join food f on p.foodID = f.foodID 
                                     join store s on p.storeID = s.storeID
                                     where p.storeID = ? and f.foodID like ? order by priceDate asc`, [storeID, foodID]);
-                                    //where f.foodID like ? order by priceDate asc, p.storeID`, [foodID]);
-
     return rows;
 }
 async function getPriceCompare(id,foodname) {
@@ -62,29 +60,13 @@ async function getLatestPriceByCat(storeid,foodCatID) {
                 fc.fcatID = ff.fcatID 
                 where p.priceDate = ( select max(priceDate) from price p2 where p.foodID = p2.foodID and p.storeID = p2.storeID) and
                 p.storeID = ? and fc.fcatID = ?
-                group by f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, fc.fcatName, p.priceLink, p.priceDate
-                order by p.priceByWeight, priceDate desc`
-                const [rows] = await pool.query(query, [storeid, foodCatID]);
-    return rows;
-}
-
-// get all the food items that have the same foodID but are not from the same store
-        // limitation to this is that it doesn't compare similarly named items. it also shows old items 
-async function getSimilarFoods(foodID,storeID) {
-    let query = `select p.foodID, p.storeID, p.priceListing, p.priceByWeight, p.priceWeight, p.priceMetric,
-                max(p.priceDate) as priceDate, f.foodName, s.storeName, s.storeAddress, c.companyName from price p
-                join food f on f.foodID = p.foodID
-                join store s on p.storeID = s.storeID
-                join company c on s.companyID = c.companyID
-                where p.foodID = ? and p.storeID <> ?
-                group by p.foodID, p.storeID, p.priceListing, p.priceByWeight, f.foodName, p.priceWeight, p.priceMetric
-                order by priceDate desc, p.priceByWeight`
-    const [rows] = await pool.query(query, [foodID,storeID]);
+                group by f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, fc.fcatName, p.priceLink, p.priceDate`
+    const [rows] = await pool.query(query, [storeid, foodCatID]);
     return rows;
 }
 
 module.exports = {
-    getAllStores, 
+    getAllStores,
     getAllFood,
     getStorePrices,
     getStoreByID,
@@ -92,5 +74,4 @@ module.exports = {
     getPriceCompare,
     getPriceHistory,
     getLatestPriceByCat,
-    getSimilarFoods,
 }

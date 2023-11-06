@@ -6,7 +6,7 @@
     <title>Price History</title>
 </head>
 <body>
-    <h2 class="chartTitle">Test123</h2>
+    <h2 class="chartTitle"></h2>
     <div class="chartDiv">
         <canvas id="myChart" style="padding:3rem;max-height:700px;"></canvas>
     </div>
@@ -16,7 +16,8 @@
         const params = new URLSearchParams(window.location.search);
         const sid = params.get('sid');
         const fid = params.get('fid');
-        chartPush(sid,fid);
+        const wt = params.get('wt')
+        chartPush(sid,fid,wt);
     </script>  
 </body>
 </html>

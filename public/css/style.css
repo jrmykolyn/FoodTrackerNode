@@ -133,9 +133,10 @@ body {
     font-size: 1.25rem;
 }
 
-.map-link:hover, .news-link:hover {
+.map-link:hover, .news-link:hover, .modal-support:hover {
     filter:brightness(0.8);
-}
+    cursor: pointer;
+}   
 
 .map-link i, .news-link i {
     font-size: 2rem;
@@ -146,6 +147,9 @@ body {
     text-align: center;
 }
 
+.news-link.support {
+    margin-top: 1rem;
+}
 
 /*chart*/
 .chartTitle {
@@ -156,6 +160,100 @@ body {
     display: block;
     margin: auto;
 }
+
+/* Modal */
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    -webkit-animation-name: fadeIn; /* Fade in the background */
+    -webkit-animation-duration: 0.4s;
+    animation-name: fadeIn;
+    animation-duration: 0.4s
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    position: fixed;
+    bottom: 0;
+    background-color: #fefefe;
+    width: 100%;
+    -webkit-animation-name: slideIn;
+    -webkit-animation-duration: 0.4s;
+    animation-name: slideIn;
+    animation-duration: 0.4s
+  }
+  
+  /* The Close Button */
+  .close {
+    padding: 1rem;
+    font-size: 1.85rem;
+  }
+  
+  .close:hover,
+  .close:focus {
+    text-decoration: none;
+    cursor: pointer;
+    backdrop-filter: brightness(0.8);
+  }
+  
+  .modal-header {
+    background-color: var(--hsr-ylw);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h2, .modal-body {
+    padding: 0 1rem;
+    margin: 0;
+  }
+
+  .modal-body {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .modal-support {
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem;
+    background-color: var(--hsr-ylw);
+    transition: 0.4s;
+    border-radius: 0.25rem;
+    color: var(--hsr-blk)
+  }
+
+  
+  /* Add Animation */
+  @-webkit-keyframes slideIn {
+    from {bottom: -300px; opacity: 0} 
+    to {bottom: 0; opacity: 1}
+  }
+  
+  @keyframes slideIn {
+    from {bottom: -300px; opacity: 0}
+    to {bottom: 0; opacity: 1}
+  }
+  
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0} 
+    to {opacity: 1}
+  }
 
 @media only screen and (max-width: 768px) {
 

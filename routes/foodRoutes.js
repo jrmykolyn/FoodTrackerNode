@@ -19,4 +19,8 @@ router.get('/pricehistory/:storeID/:foodID', foodController.getPriceHistory);
 
 router.get('/pricecompare/:id/:foodname', foodController.getPriceCompare);
 
+router.get('/latestprice/:storeID/:foodCatID', foodController.getLatestPriceByCat);
+
+router.get('/similarfood/:foodID/:storeID', foodController.getSimilarFoods);
+
 module.exports = router;
