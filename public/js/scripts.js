@@ -11,7 +11,7 @@ let storePriceData = async function(id) {
     // this is now the get every price associated with this ID query. might take a while to load
     clearDiv()
     const response = await axios.get(`/api/prices/${id}`);
-    console.log(response);
+    //console.log(response);
     response.data.forEach((row) =>{
         if(typeof row.foodName === 'undefined'){
             console.log('not working')
