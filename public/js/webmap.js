@@ -14633,8 +14633,8 @@ fetch('/api/stores')
                             radius: 7
                         }).bindPopup("<h5 class='popup-title'> " + mk.storeName + "</h5>" +
                                         "<div>Address: " +mk.storeAddress + "</div>" + 
-                                        "<div>Postal Code: " + mk.storePostalCode +"</div>"+
-                                        "<div class='storebtn' onclick='storeCategory(" +mk.storeID+ ")'>See Data</div>");
+                                        "<div>Postal Code: " + mk.storePostalCode +"</div>"
+                                        );
                         marker2.addTo(noDataGrp)
                     }
                 }
