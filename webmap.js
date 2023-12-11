@@ -7,10 +7,15 @@ var icon1 = L.icon({
     shadowUrl: '/assets/icons/marker-shadow.png',
     iconAnchor: [25, 41], // point of the icon which will correspond to marker's location
     popupAnchor: [0, -51], // point from which the popup should open relative to the iconAnchor    
-    iconSize: [25,41]
-    
-    
-    // needs icon size                             
+    iconSize: [25,41]                         
+});
+
+var iconCurr = L.icon({
+    iconUrl: '/assets/raccoon.png',
+    //shadowUrl: '/assets/icons/marker-shadow.png',
+    iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor    
+    iconSize: [25,25]                         
 });
 
 
@@ -22,53 +27,56 @@ var mapLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 });
 mapLayer.addTo(map);
 
-let rows = [];
+//SET CURRENT LOCATION AS A MARKER
+
+    const options = {
+        enableHighAccuracy: true, 
+        // Get high accuracy reading, if available (default false)
+        timeout: 5000, 
+        // Time to return a position successfully before error (default infinity)
+        maximumAge: 2000, 
+        // Milliseconds for which it is acceptable to use cached position (default 0)
+    };
+    //method called immediately, passes in success, error 
+    navigator.geolocation.getCurrentPosition(success, error, options);
+
+    function error(err) {
+
+        if (err.code === 1) {
+            alert("Please allow geolocation access");
+            // Runs if user refuses access
+        } else {
+            alert("Cannot get current location");
+            // Runs if there was a technical problem.
+        }
+
+    }
+    let marker, circle, zoomed;
+
+    function success(pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const accuracy = pos.coords.accuracy;
+    
+        marker = L.marker([lat, lng], {
+            icon: iconCurr,
+            opacity: 1
+        }).addTo(map);
+        circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+        map.panTo([lat, lng])
+    }
+    
+    function error(err) {
+    
+        if (err.code === 1) {
+            alert("Please allow geolocation access");
+        } else {
+            alert("Cannot get current location");
+        }
+    
+    }
 
 setInterval(function() {   map.invalidateSize(); }, 100)
-/*$.get('/mapdata/stores-temp.csv', function(csvString) {
-
-    // Use PapaParse to convert string to array of objects
-    var data = Papa.parse(csvString, {header: true, dynamicTyping: true}).data;
-    let storeAmt = data.length;
-    let storeAmtDisp = document.querySelector('.storeAmt');
-    storeAmtDisp.textContent = `Displaying data from ${storeAmt} stores`;
-
-    // For each row in data, create a marker and add it to the map
-    // For each row, columns `Latitude`, `Longitude`, and `Title` are required
-    for (var i in data) {
-    var row = data[i];
-    console.log(data[i].lat)
-    let store;
-    if (row.companyID==2){
-        store="Loblaws";
-    } else if(row.companyID==3) {
-        store = 'No Frills'
-    } else if(row.companyID==5) {
-        store = 'Real Canadian Superstore'
-    } else {
-        store = "";
-    }
-    try {
-        if (data[i].lat == 'nan' || data[i].lat == 'null') {
-        console.log('nan')
-        } else {
-        var marker = L.marker([row.storeLat, row.storeLong], {
-            icon: icon1,
-            opacity: 1
-        }).bindPopup("<h5 class='popup-title'> " + store + " - " + row.storeName + "</h5>" +
-                        "<div>Address: " +row.storeAddress + "</div>" + 
-                        "<div>Postal Code: " + row.storePostalCode +"</div>"+
-                        "<div class='storebtn' onclick='storeCategory(" +row.storeID+ ")'>See Data</div>");
-    
-        marker.addTo(map);
-        }
-    } catch {
-        console.log(`error with item ${data[i]}`)
-    }
-
-    
-    }
-});*/
 
 fetch('/api/stores')
     .then(response => response.json())
@@ -81,7 +89,6 @@ fetch('/api/stores')
 
         let dataGrp = L.layerGroup([])
         let noDataGrp = L.layerGroup([])
-
 
         markers.forEach(mk => {
             //console.log(mk.storeID);
@@ -113,7 +120,7 @@ fetch('/api/stores')
                         marker.addTo(dataGrp);
                     } else {
                         var marker2 = L.circleMarker([mk.storeLat, mk.storeLon], {
-                            opacity: 1,
+                            opacity: 0.8,
                             color: 'black',
                             radius: 7
                         }).bindPopup("<h5 class='popup-title'> " + mk.storeName + "</h5>" +
