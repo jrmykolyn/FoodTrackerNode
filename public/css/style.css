@@ -72,6 +72,9 @@ body {
     gap: 1rem;
     justify-content: center;
     margin-top: 1rem;
+    position: absolute;
+    top: 200px;
+    z-index: 999;
 }
 .foodItem, .foodItemCat {
     display: flex;
@@ -232,6 +235,16 @@ body {
     border-radius: 0.25rem;
     color: var(--hsr-blk)
   }
+
+  /*map overlay */
+
+  .searchForm {
+    position: absolute;
+    top: 85px;
+    z-index: 400;
+    padding: 0 4rem;
+  }
+
 
   
   /* Add Animation */

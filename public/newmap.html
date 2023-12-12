@@ -20,10 +20,21 @@
     </div>
     <div class="storeAmt"></div>
     <div class="data_response">
-      <h4>Click on the map to get started</h4>
+        <h4>Click on the map to get started</h4>
     </div>	
+    <div class="searchForm">
+      <h4>Find food near you</h4>
+      <form id="geocodeForm" onsubmit="event.preventDefault();">
+        <input type="text" id="addressInput" placeholder="Enter an address" required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+   
+
+  <div id="resultContainer"></div>
 <script src="js/webmap.js"></script>
 <script src="js/scripts.js"></script>
+
 </body>
 
 </html>

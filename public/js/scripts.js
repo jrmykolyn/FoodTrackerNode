@@ -285,5 +285,6 @@ function dataConversion(pbw, pm, newMetric) {
     } 
 }
 
-let data = dataConversion(10,'lb','100g');
-console.log(data)
+//let data = dataConversion(10,'lb','100g');
+//console.log(data)
+

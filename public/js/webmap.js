@@ -14524,15 +14524,13 @@ var icon1 = L.icon({
     popupAnchor: [0, -51], // point from which the popup should open relative to the iconAnchor    
     iconSize: [25,41]                         
 });
-
 var iconCurr = L.icon({
     iconUrl: '/assets/raccoon.png',
     //shadowUrl: '/assets/icons/marker-shadow.png',
-    iconAnchor: [25, 25], // point of the icon which will correspond to marker's location
+    iconAnchor: [12, 12], // point of the icon which will correspond to marker's location
     popupAnchor: [0, 0], // point from which the popup should open relative to the iconAnchor    
     iconSize: [25,25]                         
 });
-
 
 var map = L.map('map').setView([43.7440736,-79.4180339], 10);
 
@@ -14552,12 +14550,10 @@ mapLayer.addTo(map);
         maximumAge: 2000, 
         // Milliseconds for which it is acceptable to use cached position (default 0)
     };
-
+    //method called immediately, passes in success, error 
     navigator.geolocation.getCurrentPosition(success, error, options);
-    // Fires success function immediately and when user position changes
 
     function error(err) {
-
         if (err.code === 1) {
             alert("Please allow geolocation access");
             // Runs if user refuses access
@@ -14565,7 +14561,6 @@ mapLayer.addTo(map);
             alert("Cannot get current location");
             // Runs if there was a technical problem.
         }
-
     }
     let marker, circle, zoomed;
 
@@ -14573,24 +14568,24 @@ mapLayer.addTo(map);
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
-    
+        // create location marker - needs own group to sit in so we can remove it from the map when searching a new location
         marker = L.marker([lat, lng], {
             icon: iconCurr,
             opacity: 1
         }).addTo(map);
-        circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+        circle = L.circle([lat, lng], { radius: 20 }).addTo(map);
         map.panTo([lat, lng])
     }
     
     function error(err) {
-    
         if (err.code === 1) {
             alert("Please allow geolocation access");
         } else {
             alert("Cannot get current location");
         }
-    
     }
+
+
 
 setInterval(function() {   map.invalidateSize(); }, 100)
 
@@ -14605,7 +14600,6 @@ fetch('/api/stores')
 
         let dataGrp = L.layerGroup([])
         let noDataGrp = L.layerGroup([])
-
 
         markers.forEach(mk => {
             //console.log(mk.storeID);
@@ -14637,8 +14631,7 @@ fetch('/api/stores')
                         marker.addTo(dataGrp);
                     } else {
                         var marker2 = L.circleMarker([mk.storeLat, mk.storeLon], {
-                            opacity: 0.8,
-                            color: 'black',
+                            color: '#665b5b',
                             radius: 7
                         }).bindPopup("<h5 class='popup-title'> " + mk.storeName + "</h5>" +
                                         "<div>Address: " +mk.storeAddress + "</div>" + 
@@ -14657,12 +14650,55 @@ fetch('/api/stores')
         dataGrp.addTo(map)
         noDataGrp.addTo(map)
         //needs layer control but needs layers first
-        //var layerControl = L.control.layers(noDataGrp).addTo(map);
 
-        var overlays = {
-            'Scrape Data' : dataGrp,
-            'Other stores' : noDataGrp
+        /* SEARCH FUNCTIONALITY CREATING A NEW MARKER BASED ON THE LOCATION */
+
+        async function geocode(address) {
+            const base_url = "https://nominatim.openstreetmap.org/search";
+            const params = new URLSearchParams({
+                q: address,
+                format: "json",
+            });
+        
+            const url = `${base_url}?${params.toString()}`;
+        
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+        
+                if (data && data.length > 0) {
+                    const latitude = parseFloat(data[0].lat);
+                    const longitude = parseFloat(data[0].lon);
+                    return { latitude, longitude };
+                } else {
+                    console.log("No results found for the given address.");
+                    return null;
+                }
+            } catch (error) {
+                console.error(`Error in geocoding request: ${error}`);
+                return null;
+            }
         }
+        
+        document.getElementById("geocodeForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const addressInput = document.getElementById("addressInput");
+            const resultContainer = document.getElementById("resultContainer");
+            const address = addressInput.value.trim();
+            const coordinates = await geocode(address);
+            if (coordinates) {
+                resultContainer.innerHTML = `<p>Coordinates for '${address}': ${coordinates.latitude}, ${coordinates.longitude}</p>`;
+            
+                marker = L.marker([coordinates.latitude, coordinates.longitude], {
+                    icon: iconCurr,
+                    opacity: 1
+                }).addTo(map);
+                circle = L.circle([coordinates.latitude, coordinates.longitude], { radius: 20 }).addTo(map);
+                map.panTo([coordinates.latitude, coordinates.longitude])
+            } else {
+                resultContainer.innerHTML = "No results found for the given address.</p>";
+            }
+        });
         var layerControl = L.control.layers().addTo(map)
         layerControl.addOverlay(dataGrp, "Active stores");
         layerControl.addOverlay(noDataGrp, "All other stores");
@@ -14671,6 +14707,20 @@ fetch('/api/stores')
 })
 .catch(error => console.error('Error fetching markers:', error));
 
+
+// SET MAP HEIGHT TO 100%
+function changeH() {
+    let mapElem = document.querySelector(".map-container")
+    let brH = window.innerHeight
+    console.log("height: ", brH) 
+    mapElem.style.height = `${brH}px`;
+    let resultH = brh - 150
+    let result = document.querySelector(".data_response")       
+    result.style.top = `${resultH}px`;
+}
+changeH();
+
+// Create a div on click to say "use current location"
 
 
 },{"leaflet":1}]},{},[2]);
