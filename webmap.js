@@ -198,7 +198,7 @@ function changeH() {
     let mapElem = document.querySelector(".map-container")
     let brH = window.innerHeight
     console.log("height: ", brH) 
-    mapElem.style.height = `${brH}px`;
+    mapElem.style.height = `${brH-85}px`;
 
     //this doesnt go here, it goes in the script.js function that populates the data response div
     let resultH = brh - 150

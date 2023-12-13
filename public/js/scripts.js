@@ -66,6 +66,11 @@ let storeCategory = async function(id) {
                     responseDiv.appendChild(div);
                 }                
         });
+        //move where the data is placed on screen
+        let resultH = window.innerHeight - 150
+        let result = document.querySelector(".data_response")       
+        result.style.top = `${resultH}px`;
+        result.style.backgroundColor = "rgba(0,0,0,0.8)"
     });
 }
 
