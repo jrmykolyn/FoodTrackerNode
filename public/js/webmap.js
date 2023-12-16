@@ -14749,22 +14749,25 @@ fetch('/api/stores')
 
                 console.log("stores in your area:",under1k)
                 //create a div that will list stores near you. grey out the ones with no data. allow you to compare the prices of items within the area 
+                let storeDataDiv = document.querySelector(".store_data_response")  
+                storeDataDiv.style.display = ""
                 let storeFlex = document.createElement('div');
                 storeFlex.classList.add('store_flex');
                 let closeBtn = document.createElement('div');
                 closeBtn.classList.add('close_btn');
                 // function needs to clear style entirely or display:none;
-                closeBtn.addEventListener('click', function(){ result.innerHTML='';result.style.backgroundColor="rgba(255,255,255,0)"}, false);
-                let storeDataDiv = document.querySelector(".store_data_response")                
+                closeBtn.addEventListener('click', function(){ storeDataDiv.style.display='none'}, false);
+                
+                storeDataDiv.innerHTML = ""              
                 storeDataDiv.appendChild(closeBtn)
                 storeDataDiv.appendChild(storeFlex)
-                //create divs for every single store in order of closest to farthest
+                // create divs for every single store in order of closest to farthest
                 for (let i=0;i<allPts.length;i++) {
                     let indStoreDiv = document.createElement('div')
                     let indStoreName = document.createTextNode(`${i+1}. ${allPts[i].storeData.storeName}`);
                     let indStoreDivDist = document.createElement('div')
                     let indStoreDist = document.createTextNode(`${Math.round(allPts[i].storeDistance)}m from current location`);
-
+                    indStoreDivDist.style.fontSize = '0.75rem'
                     storeFlex.appendChild(indStoreDiv)
                     storeFlex.appendChild(indStoreDivDist)
                     indStoreDiv.appendChild(indStoreName)
@@ -14773,10 +14776,16 @@ fetch('/api/stores')
                     let indStoreActFlex = document.createElement('div')
                     indStoreActFlex.classList.add('act_btn_flex');
                     indStoreDivDist.appendChild(indStoreActFlex)
+                    // if has scrape data put a button to allow access for it
                     if(allPts[i].storeData.storeScrapeData) {
                         let testBtn = createNode('more_store_info','More Store Info',`storeCategory(${allPts[i].storeData.storeID})`)
                         indStoreActFlex.appendChild(testBtn)
                     }
+                    // if has website / flyer in data then display the link button
+                    /*if(allPts[i].storeData.storeScrapeData) {
+                        let testBtn = createNode('more_store_info','More Store Info',`storeCategory(${allPts[i].storeData.storeID})`)
+                        indStoreActFlex.appendChild(testBtn)
+                    }*/
                     // element to start comparing data
 
 

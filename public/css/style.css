@@ -289,8 +289,8 @@ body {
   .go_to_store:hover, .more_store_info:hover {
     backdrop-filter: brightness(0.8);
     color:var(--hsr-blk);
+    cursor: pointer;
   }
-
 
   /* Add Animation */
   @-webkit-keyframes slideIn {
