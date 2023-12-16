@@ -202,10 +202,24 @@ body {
   }
   
   .close:hover,
-  .close:focus {
+  .close:focus,
+  .close_btn:hover {
     text-decoration: none;
     cursor: pointer;
     backdrop-filter: brightness(0.8);
+  }
+  
+  .close_btn::before {
+    content: "x";
+    font: 16px/24px Tahoma, Verdana, sans-serif;
+    color: #757575;
+  }
+
+  .close_btn {
+    padding: 0.25rem 0.5rem;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
   
   .modal-header {
@@ -245,8 +259,20 @@ body {
     padding: 0 4rem;
   }
 
+  .store_data_response {
+    background-color: rgba(255,255,255,0.9);
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 180px;
+    z-index: 999;
+    left: 11px;
+    padding: 2rem 1rem;
+  }
 
-  
+  .store_flex {
+    max-height: 250px;
+    overflow:auto;
+  }
   /* Add Animation */
   @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 

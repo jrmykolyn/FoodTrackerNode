@@ -1,7 +1,7 @@
 // Import the leaflet package
 var L = require('leaflet');
 
-// setting icons so they don't break anymore 
+// setting icons so they don't break 
 var icon1 = L.icon({
     iconUrl: '/assets/icons/marker-icon.png',
     shadowUrl: '/assets/icons/marker-shadow.png',
@@ -58,6 +58,7 @@ mapLayer.addTo(map);
             icon: iconCurr,
             opacity: 1
         }).addTo(map);
+        L.DomUtil.addClass(marker._icon, 'currentLoc');
         circle = L.circle([lat, lng], { radius: 20 }).addTo(map);
         map.panTo([lat, lng])
     }
@@ -87,7 +88,6 @@ fetch('/api/stores')
         let noDataGrp = L.layerGroup([])
 
         markers.forEach(mk => {
-            //console.log(mk.storeID);
             let store;
             if (mk.companyID==2){
                 store="Loblaws";
@@ -134,7 +134,6 @@ fetch('/api/stores')
         });
         dataGrp.addTo(map)
         noDataGrp.addTo(map)
-        //needs layer control but needs layers first
 
         /* SEARCH FUNCTIONALITY CREATING A NEW MARKER BASED ON THE LOCATION */
 
@@ -165,6 +164,7 @@ fetch('/api/stores')
             }
         }
         
+        //create current location icon
         document.getElementById("geocodeForm").addEventListener("submit", async function(event) {
             event.preventDefault();
             const addressInput = document.getElementById("addressInput");
@@ -172,13 +172,98 @@ fetch('/api/stores')
             const address = addressInput.value.trim();
             const coordinates = await geocode(address);
             if (coordinates) {
+                //remove old current location 
+                let oldMarker = document.querySelectorAll(".currentLoc")
+                    oldMarker.forEach((elem) => elem.style.display = "none") 
+
                 resultContainer.innerHTML = `<p>Coordinates for '${address}': ${coordinates.latitude}, ${coordinates.longitude}</p>`;
-            
-                marker = L.marker([coordinates.latitude, coordinates.longitude], {
+                //create new marker for current location
+                let marker3 = L.marker([coordinates.latitude, coordinates.longitude], {
                     icon: iconCurr,
                     opacity: 1
                 }).addTo(map);
-                circle = L.circle([coordinates.latitude, coordinates.longitude], { radius: 20 }).addTo(map);
+                L.DomUtil.addClass(marker3._icon, 'currentLoc');
+
+                //Create 1km circle around current location
+                currentLocCirc = L.circle([coordinates.latitude, coordinates.longitude], { radius: 1000 }).addTo(map);
+                let allPts = []
+                let under1k =[]
+                let currentCoords = currentLocCirc.getLatLng()
+                markers.forEach(store => { 
+                    //let storesInBuf = points_within.pointsWithinPolygon([store.storeLon,store.storeLat],tBuffer)
+                    //console.log(storesInBuf)
+                    //+allPts.append([store.storeLon,store.storeLat])
+                    //let markDist = currentCoords.distanceTo([coordinates.latitude, coordinates.longitude], [store.storeLat,store.storeLon])
+                    let storeCoords;
+                    let dist
+                    try {
+                        storeCoords = L.latLng(store.storeLat,store.storeLon);
+                        dist = storeCoords.distanceTo(currentCoords)
+                    } catch(e) {
+                        console.log('storeCoords null')
+                    } finally {
+                        if(dist) {
+                            //console.log(dist)
+                            allPts.push({'storeData': store, 'storeDistance':dist})
+                            if (dist < 1000) {
+                                under1k.push({'storeData': store, 'storeDistance':dist})
+                            }
+                        }
+                    }
+                });
+                //sort the store distance data
+                allPts.sort(function(a, b){
+                    var distA=a.storeDistance, distB=b.storeDistance
+                    if (distA < distB) //sort string ascending
+                        return -1 
+                    if (distA > distB)
+                        return 1
+                    return 0 //default return value (no sorting)
+                })
+                under1k.sort(function(a, b){
+                    var distA=a.storeDistance, distB=b.storeDistance
+                    if (distA < distB) //sort string ascending
+                        return -1 
+                    if (distA > distB)
+                        return 1
+                    return 0 //default return value (no sorting)
+                })
+                //console.log(allPts)
+
+                console.log("stores in your area:",under1k)
+                //create a div that will list stores near you. grey out the ones with no data. allow you to compare the prices of items within the area 
+                let storeFlex = document.createElement('div');
+                storeFlex.classList.add('store_flex');
+                let closeBtn = document.createElement('div');
+                closeBtn.classList.add('close_btn');
+                // function needs to clear style entirely or display:none;
+                closeBtn.addEventListener('click', function(){ result.innerHTML='';result.style.backgroundColor="rgba(255,255,255,0)"}, false);
+                let storeDataDiv = document.querySelector(".store_data_response")                
+                storeDataDiv.appendChild(closeBtn)
+                storeDataDiv.appendChild(storeFlex)
+                //create divs for every single store in order of closest to farthest
+                for (let i=0;i<allPts.length;i++) {
+                    let indStoreDiv = document.createElement('div')
+                    let indStoreName = document.createTextNode(`${i+1}. ${allPts[i].storeData.storeName}`);
+                    let indStoreDivDist = document.createElement('div')
+                    let indStoreDist = document.createTextNode(`${Math.round(allPts[i].storeDistance)}m from current location`);
+                    let indStoreActFlex = document.createElement('div')
+
+                    storeFlex.appendChild(indStoreDiv)
+                    storeFlex.appendChild(indStoreDivDist)
+                    indStoreDiv.appendChild(indStoreName)
+                    indStoreDivDist.appendChild(indStoreDist)
+                    // element to scroll to store on click
+
+                    // element to start comparing data
+
+
+                }
+
+
+
+
+                //pan to current location
                 map.panTo([coordinates.latitude, coordinates.longitude])
             } else {
                 resultContainer.innerHTML = "No results found for the given address.</p>";
@@ -199,13 +284,10 @@ function changeH() {
     let brH = window.innerHeight
     console.log("height: ", brH) 
     mapElem.style.height = `${brH-85}px`;
-
-    //this doesnt go here, it goes in the script.js function that populates the data response div
-    let resultH = brh - 150
-    let result = document.querySelector(".data_response")       
-    result.style.top = `${resultH}px`;
 }
 changeH();
 
 // Create a div on click to say "use current location"
+
+//function to create div, pass in the name of div
 

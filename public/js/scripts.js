@@ -49,6 +49,8 @@ let storeCategory = async function(id) {
     //create category select buttons
     let catFlex = document.createElement('div');
     catFlex.classList.add('category_flex');
+    let closeBtn = document.createElement('div');
+    closeBtn.classList.add('close_btn');
     //get food staples set in mapdata/foodstaples.csv
     $.get('/mapdata/staples-temp.csv', function(csvString) {
         //let categories = ['Milk', 'Bananas', 'Eggs', 'Chicken', 'Bread'];
@@ -69,8 +71,12 @@ let storeCategory = async function(id) {
         //move where the data is placed on screen
         let resultH = window.innerHeight - 150
         let result = document.querySelector(".data_response")       
+        result.prepend(closeBtn);
+        closeBtn.addEventListener('click', function(){ result.innerHTML='';result.style.backgroundColor="rgba(255,255,255,0)"}, false);
         result.style.top = `${resultH}px`;
-        result.style.backgroundColor = "rgba(0,0,0,0.8)"
+        result.style.padding = "1rem"
+        result.style.backgroundColor = "rgba(255,255,255,0.9)"
+        result.style.border = "1px solid #dadada"
     });
 }
 

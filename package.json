@@ -11,6 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@turf/buffer": "^6.5.0",
+    "@turf/circle": "^6.5.0",
+    "@turf/clean-coords": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
+    "@turf/points-within-polygon": "^6.5.0",
     "body-parser": "^1.20.2",
     "chart.js": "^4.4.0",
     "dotenv": "^16.3.1",
@@ -18,6 +23,7 @@
     "express": "^4.18.2",
     "ionicons": "^7.1.2",
     "leaflet": "^1.9.4",
-    "mysql2": "^3.6.1"
+    "mysql2": "^3.6.1",
+    "turf": "^3.0.14"
   }
 }
