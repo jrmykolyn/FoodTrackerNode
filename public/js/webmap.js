@@ -14692,8 +14692,6 @@ fetch('/api/stores')
                 //remove old current location 
                 let oldMarker = document.querySelectorAll(".currentLoc")
                     oldMarker.forEach((elem) => elem.style.display = "none") 
-
-                resultContainer.innerHTML = `<p>Coordinates for '${address}': ${coordinates.latitude}, ${coordinates.longitude}</p>`;
                 //create new marker for current location
                 let marker3 = L.marker([coordinates.latitude, coordinates.longitude], {
                     icon: iconCurr,
