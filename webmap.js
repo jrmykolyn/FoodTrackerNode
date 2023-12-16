@@ -107,7 +107,8 @@ fetch('/api/stores')
                         // if has data, do default, and add it to datagrp, if not, add to other group
                         var marker = L.marker([mk.storeLat, mk.storeLon], {
                             icon: icon1,
-                            opacity: 1
+                            opacity: 1,
+                            className : `store${mk.storeID}`
                         }).bindPopup("<h5 class='popup-title'> " + store + " - " + mk.storeName + "</h5>" +
                                         "<div>Address: " +mk.storeAddress + "</div>" + 
                                         "<div>Postal Code: " + mk.storePostalCode +"</div>"+
@@ -117,7 +118,8 @@ fetch('/api/stores')
                     } else {
                         var marker2 = L.circleMarker([mk.storeLat, mk.storeLon], {
                             color: '#665b5b',
-                            radius: 7
+                            radius: 7,
+                            className: `store${mk.storeID}`
                         }).bindPopup("<h5 class='popup-title'> " + mk.storeName + "</h5>" +
                                         "<div>Address: " +mk.storeAddress + "</div>" + 
                                         "<div>Postal Code: " + mk.storePostalCode +"</div>"
@@ -247,14 +249,19 @@ fetch('/api/stores')
                     let indStoreName = document.createTextNode(`${i+1}. ${allPts[i].storeData.storeName}`);
                     let indStoreDivDist = document.createElement('div')
                     let indStoreDist = document.createTextNode(`${Math.round(allPts[i].storeDistance)}m from current location`);
-                    let indStoreActFlex = document.createElement('div')
 
                     storeFlex.appendChild(indStoreDiv)
                     storeFlex.appendChild(indStoreDivDist)
                     indStoreDiv.appendChild(indStoreName)
                     indStoreDivDist.appendChild(indStoreDist)
-                    // element to scroll to store on click
-
+                    // button flex element to scroll to store on click
+                    let indStoreActFlex = document.createElement('div')
+                    indStoreActFlex.classList.add('act_btn_flex');
+                    indStoreDivDist.appendChild(indStoreActFlex)
+                    if(allPts[i].storeData.storeScrapeData) {
+                        let testBtn = createNode('more_store_info','More Store Info',`storeCategory(${allPts[i].storeData.storeID})`)
+                        indStoreActFlex.appendChild(testBtn)
+                    }
                     // element to start comparing data
 
 
@@ -290,4 +297,13 @@ changeH();
 // Create a div on click to say "use current location"
 
 //function to create div, pass in the name of div
-
+function createNode(className,textNode,onclick){
+    newNode = document.createElement('div')
+    newNode.classList.add(className);
+    let nodeText = document.createTextNode(textNode);
+    if(onclick){
+        newNode.setAttribute("onclick", onclick)
+    }
+    newNode.appendChild(nodeText)
+    return newNode
+}

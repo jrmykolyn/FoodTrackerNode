@@ -273,6 +273,25 @@ body {
     max-height: 250px;
     overflow:auto;
   }
+
+  .act_btn_flex {
+    display: flex;
+  }
+
+  .go_to_store, .more_store_info {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border: 1px solid #6d6d6d;
+    padding: 0.25rem;
+    color: #6d6d6d;
+  }
+
+  .go_to_store:hover, .more_store_info:hover {
+    backdrop-filter: brightness(0.8);
+    color:var(--hsr-blk);
+  }
+
+
   /* Add Animation */
   @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 
