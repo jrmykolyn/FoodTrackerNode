@@ -73,7 +73,7 @@ let storeCategory = async function(id) {
         let result = document.querySelector(".data_response")       
         result.prepend(closeBtn);
         closeBtn.addEventListener('click', function(){ result.innerHTML='';result.style.backgroundColor="rgba(255,255,255,0)"}, false);
-        result.style.top = `${resultH}px`;
+        //result.style.top = `${resultH}px`;
         result.style.padding = "1rem"
         result.style.backgroundColor = "rgba(255,255,255,0.9)"
         result.style.border = "1px solid #dadada"

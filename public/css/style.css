@@ -6,6 +6,7 @@
 body {
     margin: 0;
     font-family: arial;
+    overflow: hidden;
 }
 
 .header {
@@ -72,8 +73,8 @@ body {
     gap: 1rem;
     justify-content: center;
     margin-top: 1rem;
-    position: absolute;
-    top: 200px;
+    position: fixed;
+    bottom: 0;
     z-index: 999;
 }
 .foodItem, .foodItemCat {

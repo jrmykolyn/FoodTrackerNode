@@ -14593,9 +14593,9 @@ setInterval(function() {   map.invalidateSize(); }, 100)
 fetch('/api/stores')
     .then(response => response.json())
     .then(markers => {
-        let storeAmt = markers.length;
+        /*let storeAmt = markers.length;
         let storeAmtDisp = document.querySelector('.storeAmt');
-        storeAmtDisp.textContent = `Displaying data from ${storeAmt} stores`;
+        storeAmtDisp.textContent = `Displaying data from ${storeAmt} stores`;*/
 
         //layer groups 
 
