@@ -59,7 +59,7 @@ mapLayer.addTo(map);
             opacity: 1
         }).addTo(map);
         L.DomUtil.addClass(marker._icon, 'currentLoc');
-        circle = L.circle([lat, lng], { radius: 20 }).addTo(map);
+        circle = L.circle([lat, lng], { radius: 1000, className: 'map-circle' }).addTo(map);
         map.panTo([lat, lng])
     }
     
@@ -185,7 +185,17 @@ fetch('/api/stores')
                 L.DomUtil.addClass(marker3._icon, 'currentLoc');
 
                 //Create 1km circle around current location
-                currentLocCirc = L.circle([coordinates.latitude, coordinates.longitude], { radius: 1000 }).addTo(map);
+                currentLocCirc = L.circle([coordinates.latitude, coordinates.longitude], { radius: 1000, className: 'map-circle' }).addTo(map);
+
+                //remove old circles
+                let oldLocCirc = document.querySelectorAll('.map-circle')
+                let oldLocCount = 0
+                oldLocCirc.forEach((loc => {
+                    if (oldLocCount < (oldLocCirc.length-1)) {
+                        loc.style.display = "none";
+                        oldLocCount++
+                    }
+                }))
                 let allPts = []
                 let under1k =[]
                 let currentCoords = currentLocCirc.getLatLng()
