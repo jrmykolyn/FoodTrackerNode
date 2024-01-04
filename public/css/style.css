@@ -253,11 +253,13 @@ body {
 
   /*map overlay */
 
-  .searchForm {
+  .mapTools {
     position: absolute;
     top: 85px;
     z-index: 400;
-    padding: 0 4rem;
+    padding-left: 4rem;
+    display: flex;
+    gap: 1rem;
   }
 
   .store_data_response {
@@ -268,6 +270,7 @@ body {
     z-index: 999;
     left: 11px;
     padding: 2rem 1rem;
+    display: none;
   }
 
   .store_flex {
@@ -291,6 +294,21 @@ body {
     backdrop-filter: brightness(0.8);
     color:var(--hsr-blk);
     cursor: pointer;
+  }
+
+  .helpSection h4 {
+    padding: 0.25rem;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+  }
+
+  .helpSection h4:hover {
+    background-color: rgba(255,255,255,0.5);
+  }
+
+  /* keep leaflet attribution from overlapping data_response div */
+  .leaflet-bottom {
+    z-index: 900;
   }
 
   /* Add Animation */
@@ -317,11 +335,40 @@ body {
 @media only screen and (max-width: 768px) {
 
 	.map-container {
-    		height: 250px;
+    height: 250px;
 	}
 
 	.raccoon {
 		display: none;
 	}
+
+  .dash-title {
+    font-size: 1.25rem;
+  }
+
+  .mapTools{
+    top: 48px;
+  }
+
+  .helpSection h4{
+    margin: 0;
+    max-width: 80px;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .mapTools {
+    flex-direction: column;
+  }
+
+  .leaflet-touch .leaflet-control-layers-toggle {
+    height: 30px;
+    width: 30px;
+  }
+
+  .data_response{
+    max-height: 500px;
+    overflow: auto;
+  }    
 
 }

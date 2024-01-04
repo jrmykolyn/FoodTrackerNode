@@ -243,7 +243,7 @@ fetch('/api/stores')
                 console.log("stores in your area:",under1k)
                 //create a div that will list stores near you. grey out the ones with no data. allow you to compare the prices of items within the area 
                 let storeDataDiv = document.querySelector(".store_data_response")  
-                storeDataDiv.style.display = ""
+                storeDataDiv.style.display = "block"
                 let storeFlex = document.createElement('div');
                 storeFlex.classList.add('store_flex');
                 let closeBtn = document.createElement('div');
@@ -281,12 +281,7 @@ fetch('/api/stores')
                     }*/
                     // element to start comparing data
 
-
                 }
-
-
-
-
                 //pan to current location
                 map.panTo([coordinates.latitude, coordinates.longitude])
             } else {

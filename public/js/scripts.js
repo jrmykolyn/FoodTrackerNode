@@ -42,7 +42,6 @@ let storePriceData = async function(id) {
     responseDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-
 let storeCategory = async function(id) {
     //clear div so there's no leftover data from previous queries
     clearDiv()
@@ -82,6 +81,8 @@ let storeCategory = async function(id) {
 
 let categorySel = async function(storeid,foodStapleID) {
     clearDiv()
+    let closeBtn = document.createElement('div');
+    closeBtn.classList.add('close_btn');
     //change query based on getting prices of food items associated with the food staple category
     //const response = await axios.get(`/api/prices/${id}/${foodname}`);
     const response = await axios.get(`/api/latestprice/${storeid}/${foodStapleID}`);
@@ -131,6 +132,9 @@ let categorySel = async function(storeid,foodStapleID) {
 
         
     })
+    let result = document.querySelector(".data_response")       
+    result.prepend(closeBtn);
+    closeBtn.addEventListener('click', function(){ result.innerHTML='';result.style.backgroundColor="rgba(255,255,255,0)"}, false);
     responseDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
