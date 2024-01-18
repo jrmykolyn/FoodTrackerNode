@@ -3,25 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Price History</title>
+    <title>StatCan Data</title>
 </head>
 <body>
-    <h2 class="chartTitle"></h2>
-    <div class="chartDiv">
-        <canvas id="myChart" style="padding:3rem;max-height:700px;"></canvas>
+    <h2>StatCan Data</h2>
+    <div class="tableDiv">
+        <!--<canvas id="myChart" style="padding:3rem;max-height:700px;"></canvas>-->
+        <label for="month">Start date:</label>
+            <select name="month" id="month">
+                <option value="1995">Jan</option>
+                <option value="1996">Feb</option>
+                <option value="1997">Mar</option>
+                <option value="1998">Apr</option>
+                <option value="1999">May</option>
+                <option value="2000">June</option>
+                <option value="2001">July</option>
+                <option value="2002">Aug</option>
+                <option value="2003">Sept</option>
+                <option value="2004">Oct</option>
+                <option value="2005">Nov</option>
+                <option value="2006">Dec</option>                
+            </select>
+            <select name="year" id="year">
+                <option value="1995">1995</option>
+                <option value="1996">1996</option>
+                <option value="1997">1997</option>
+                <option value="1998">1998</option>
+                <option value="1999">1999</option>
+                <option value="2000">2000</option>
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+                <option value="2003">2003</option>
+                <option value="2004">2004</option>
+                <option value="2005">2005</option>
+                <option value="2006">2006</option>
+                <option value="2007">2007</option>
+                <option value="2008">2008</option>
+                <option value="2009">2009</option>
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012">2012</option>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>   
+        </select>
+        <label for="month">End date:</label>
+        <select name="month" id="month">
+            <option value="1995">Jan</option>
+            <option value="1996">Feb</option>
+            <option value="1997">Mar</option>
+            <option value="1998">Apr</option>
+            <option value="1999">May</option>
+            <option value="2000">June</option>
+            <option value="2001">July</option>
+            <option value="2002">Aug</option>
+            <option value="2003">Sept</option>
+            <option value="2004">Oct</option>
+            <option value="2005">Nov</option>
+            <option value="2006">Dec</option>                
+        </select>
+        <select name="year" id="year">
+            <option value="1995">1995</option>
+            <option value="1996">1996</option>
+            <option value="1997">1997</option>
+            <option value="1998">1998</option>
+            <option value="1999">1999</option>
+            <option value="2000">2000</option>
+            <option value="2001">2001</option>
+            <option value="2002">2002</option>
+            <option value="2003">2003</option>
+            <option value="2004">2004</option>
+            <option value="2005">2005</option>
+            <option value="2006">2006</option>
+            <option value="2007">2007</option>
+            <option value="2008">2008</option>
+            <option value="2009">2009</option>
+            <option value="2010">2010</option>
+            <option value="2011">2011</option>
+            <option value="2012">2012</option>
+            <option value="2013">2013</option>
+            <option value="2014">2014</option>
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+            <option value="2019">2019</option>
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>   
+    </select>
+    <div id="checkboxSel" onclick="checkboxSel()">Select Items to Display</div>
+    <button onclick="tableWrite('/mapdata/statcan_avg_price.csv')">show</button>
+    <div id="checkbox-container"></div>
+        <table style="margin: auto;" class="table"> 
+            <thead></thead>
+            <tbody id="table-body"></tbody>
+        </table>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/scripts.js"></script>
+    <!-- Load jQuery and PapaParse to read data from a CSV file -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
     <script>
-        const params = new URLSearchParams(window.location.search);
-        const sid = params.get('sid');
-        const fid = params.get('fid');
-        const wt = params.get('wt')
 
-        //with the foodID make a query that can get all the items that have the same category
+        function tableWrite(filepath) {
+            $.get(filepath, function(data) {
+                var csvdata = Papa.parse(data, {
+                            header: false,
+                            dynamicTyping: true
+                        });
+                //console.log(Object.keys(csvdata.data[0]))
+                //console.log(csvdata.data)
+                const thead = document.querySelector('thead');
+            const headerRow = document.createElement('tr');
+            csvdata.data[0].forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
 
-        chartPush(sid,fid,wt);
+            // Append data rows
+            const tbody = document.getElementById('table-body');
+            csvdata.data.slice(1).forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                const td = document.createElement('td');
+            
+                td.textContent = cell;
+
+                tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+
+            // Get the container element
+            const checkboxContainer = document.getElementById('checkbox-container');
+
+                // Create checkboxes dynamically based on the data - index picks its spot, can hide and show based on this num
+                csvdata.data.slice(1).forEach((option, index1) => {
+                        // Create checkbox element
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `checkbox_${index1}`; // Unique ID for each checkbox
+                        checkbox.value = option[0];
+
+                        // Create label for the checkbox
+                        const label = document.createElement('label');
+                        label.htmlFor = `checkbox_${index1}`;
+                        label.appendChild(document.createTextNode(option[0]));
+
+                        // Append checkbox and label to the container
+                        checkboxContainer.appendChild(checkbox);
+                        checkboxContainer.appendChild(label);
+
+                        // Add a line break for better spacing
+                        checkboxContainer.appendChild(document.createElement('br'));
+
+                })
+
+            })
+        }
+
+        let table = document.querySelector(".table")
+        let winH = window.innerHeight
+        let winW = window.innerWidth 
+        console.log(winW)
+        let tbody = document.querySelector("#tableBody")
+        let tableDiv = document.querySelector(".tableDiv")
+        table.style.maxHeight = (winH - 200) + "px"
+        //if (winW > 768)
+            //tableDiv.style.width = (winW - (winW/10)) + "px"
+
+        function tableResults() {
+            console.log("here it is")
+        }
+
+        function checkboxSel() {
+            let ct = document.querySelector("#checkbox-container")
+            if (ct.style.display == "block") {
+                ct.style.display = ""
+            } else {
+                ct.style.display = "block"
+            }
+        }
+
+
     </script>  
 </body>
+
+<style>
+
+    .tableDiv {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    
+    }
+    table {
+        display: block;
+        overflow-y: auto;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    table tr:nth-child(even), #table-body tr:nth-child(even) td:first-of-type  {
+        background:#d8d8d8;
+    }
+    table tr td:first-of-type, th:first-of-type {
+        position: sticky;
+        left: 0;
+    }
+
+    #table-body tr:nth-child(odd) td:first-of-type, th:first-of-type {
+        background: white;
+    }
+
+    table td {
+        padding: 0.5rem;
+    }
+    body {
+        overflow: auto;
+    }
+    #checkbox-container {
+        display:none;
+        z-index: 100;
+    }
+</style>
 </html>
 

@@ -111,13 +111,14 @@ let categorySel = async function(storeid,foodStapleID) {
         priceHistAnchor.href = `/pricehist?sid=${row.storeID}&fid=${row.foodID}&wt=${row.priceWeight}`;
 
         //create an element that links to pricehistory page, adding a string query to it
-        let itemCheckLink = document.createElement('div');
+        /*let itemCheckLink = document.createElement('div');
         itemCheckLink.classList.add('itemCheck');
         itemCheckLink.innerText ="Item Check"
         itemCheckLink.setAttribute("onclick", `itemCheck(${row.foodID}, ${row.storeID})`)
-        
+        */
+
         //add all elems to array to loop through and add to parent div
-        let foodItemArray = [foodName, foodPrice, foodPriceBW, foodLink, priceDate, priceHistAnchor, itemCheckLink]
+        let foodItemArray = [foodName, foodPrice, foodPriceBW, foodLink, priceDate/*, priceHistAnchor, itemCheckLink*/]
         let divsubArray = []
 
         foodItemArray.forEach((item) => {
@@ -165,9 +166,9 @@ let itemCheck = async function(foodID, storeID) {
         pricehistLink.classList.add('priceHistory');
         pricehistLink.innerText ="Store Price History"
         let priceHistAnchor = document.createElement('a')
-        priceHistAnchor.appendChild(pricehistLink)
+        /*priceHistAnchor.appendChild(pricehistLink)
         priceHistAnchor.href = `/pricehist?sid=${row.storeID}&fid=${row.foodID}&wt=${row.priceWeight}`;
-        
+        */
         //add all elems to array to loop through and add to parent div
         let foodItemArray = [storeName, foodName, foodPrice, foodPriceBW, foodLink, priceDate, priceHistAnchor]
         let divsubArray = []

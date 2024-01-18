@@ -9,7 +9,9 @@ body {
     overflow: hidden;
 }
 
-.header {
+/* Header */
+
+.header-flex, .header-link {
     background: var(--hsr-blk);
     font-size: 2rem;
     min-height: 50px;
@@ -23,6 +25,71 @@ body {
 .header-link {
     text-decoration: none;
 }
+
+.header-link-sq {
+    border: 1px solid var(--hsr-ylw);
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: var(--hsr-ylw);
+    border-radius: 0.25rem;
+    float:right;
+    margin: 12px;
+    transition: 0.4s
+  }
+
+  .header-link-sq.empty {
+    float: left;
+    opacity: 0;
+
+  }
+
+  .header-link-sq:hover, .nav-menu-item:hover {
+    background-color: var(--hsr-ylw);
+    color: var(--hsr-blk);
+    transition: 0.4s;
+    cursor: pointer;
+  }
+
+  .nav-menu-ctn {
+    position: absolute;
+    right: 12px; 
+    top: 77px;
+    border: 1px solid var(--hsr-ylw);
+    color:  var(--hsr-ylw);
+    background:  var(--hsr-blk);
+    width: fit-content;
+    z-index: 1000;
+    opacity: 0;
+    transition: 0.4s;
+    border-radius: 0.25rem;
+  }
+
+  .nav-menu-item {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    text-decoration: none;
+    color: var(--hsr-ylw);
+    padding: 0.125rem 0.5rem;
+  }
+
+  .nav-menu-item div {
+    padding: 0.25rem 0;
+  }
+
+  .nav-menu-ctn.animate-menu {
+    height: fit-content;
+    opacity: 1;
+    -webkit-animation-name: fadeDownIn; /* Fade in the background */
+    -webkit-animation-duration: 0.5s;
+    animation-name: fadeDownIn;
+    animation-duration: 0.5s;
+    z-index: 1001;
+  }
 
 .raccoon{
     background-image: url(../assets/raccoon.png);
@@ -328,8 +395,17 @@ body {
   }
   
   @keyframes fadeIn {
-    from {opacity: 0} 
+    from {opacity: 0;} 
     to {opacity: 1}
+  }
+  @-webkit-keyframes fadeDownIn {
+    from {opacity: 0; top: 55px;} 
+    to {opacity: 1; top: 77px;}
+  }
+  
+  @keyframes fadeDownIn {
+    from {opacity: 0;top: 55px;} 
+    to {opacity: 1; top: 77px;}
   }
 
 @media only screen and (max-width: 768px) {

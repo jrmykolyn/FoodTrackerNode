@@ -36,6 +36,10 @@ app.get('/pricehist', (req, res) => {
     res.render('pricehist')
 })
 
+app.get('/trends', (req, res) => {
+    res.render('trends')
+})
+
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

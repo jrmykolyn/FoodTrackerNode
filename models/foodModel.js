@@ -60,7 +60,7 @@ async function getLatestPriceByCat(storeid,foodCatID) {
                 join price p on f.foodID = p.foodID
                 join fcat fc on
                 fc.fcatID = ff.fcatID 
-                where p.priceDate = ( select max(priceDate) from price p2 where p.foodID = p2.foodID and p.storeID = p2.storeID) and
+                where DATE_SUB(CURDATE(),INTERVAL 30 DAY) <= p.priceDate and p.priceDate = ( select max(priceDate) from price p2 where p.foodID = p2.foodID and p.storeID = p2.storeID) and
                 p.storeID = ? and fc.fcatID = ?
                 group by f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, fc.fcatName, p.priceLink, p.priceDate
                 order by p.priceByWeight, priceDate desc`
