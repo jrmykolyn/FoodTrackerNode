@@ -382,8 +382,15 @@ body {
     display:flex;
   }
 
+  /* Sidebar for Trends and Data */
+
   .sidebar {
-    border: 2px solid red;
+    border: 2px solid #c9c9c9;
+    transition: width 0.3s;
+  }
+
+  .sidebar:hover {
+    width: fit-content;
   }
 
   .sidebar-item {
@@ -392,7 +399,33 @@ body {
     flex-wrap: nowrap;
     padding: 0.5rem 0.5rem;
   }
+
+  .sidebar-item:hover {
+    backdrop-filter: brightness(0.9);
+  }
+
+  .sidebar-item div {
+    display: none;
+    transition: display 200ms;
+  }
+
+  .sidebar:hover div div {
+    display: block;
+    animation: slideaway 1s;
+  }
+
   /* Add Animation */
+
+  @keyframes grow {
+    from { width:0; }
+    to { width:1; }
+  }
+
+  @keyframes slideaway {
+    from { display: block; transform: translateX(-40px); opacity: 0;}
+    to { transform: translateY(0); opacity: 1;}
+  }
+
   @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 
     to {bottom: 0; opacity: 1}
