@@ -1,17 +1,69 @@
 <!--/views/sidebar-t.ejs-->
+<script>
+//console.log(trendArray)
 
+function createSidebar(data) {
+    let sidebar = document.querySelector(".sidebar")
+    //find height of document
+    const body = document.body;
+    const html = document.documentElement;
+    const docH = Math.max(body.scrollHeight, body.offsetHeight,
+                     html.clientHeight, html.scrollHeight, html.offsetHeight);
+    console.log(docH)
+    sidebar.style.height = docH + 'px'
+
+    data.forEach(item => {
+        console.log(item)
+        let newItem = document.createElement("div")
+        newItem.classList.add("sidebar-item")
+        let icon = document.createElement("i")
+        icon.classList.add("bx")
+        icon.classList.add(item.icon)
+        let itemTitle = document.createElement("div")
+        itemTitle.innerText = item.name
+        // append items create proper html hierarchy
+        newItem.appendChild(icon)
+        newItem.appendChild(itemTitle)
+        // append completed item to sidebar
+        sidebar.appendChild(newItem)
+    })
+}
+
+
+</script>
 <div class="sidebar">
-    <div class="sidebar-item">
-        <i class='bx bx-history'></i>
-        <div>Price History</div>
-    </div>
-    <div class="sidebar-item">
-        <i class='bx bx-history'></i>
-        <div>CPI Food vs All Items</div>
-    </div>
-
-    <div class="sidebar-item">
-        <i class='bx bx-history'></i>
-        <div>Price History</div>
-    </div>
+    <h2 class="sidebar-title"><%-sidebar%></h2>
 </div>
+
+<script>
+let sidebarType = document.querySelector(".sidebar-title");
+
+let trendArray = []
+if (new String(sidebarType.innerText) == "Trends") {
+    trendArray = [
+        {   
+            name:'Price History', 
+            icon: 'bx-history',
+            script: 'callHistory()'    
+        },
+        {   
+            name:'Consumer Price Index', 
+            icon: 'bx-trending-up',
+            script: 'cpiChart()'    
+        },
+        {   
+            name:'Cheapest Staples', 
+            icon: 'bx-money',
+            script: 'comparePriceCheapest()'    
+        },
+        {   
+            name:'Trends by Item', 
+            icon: 'bx-money',
+            script: 'methodology'    
+        },                
+    ]
+}
+
+
+    createSidebar(trendArray)
+</script>

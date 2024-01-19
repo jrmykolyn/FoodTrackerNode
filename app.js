@@ -37,7 +37,9 @@ app.get('/pricehist', (req, res) => {
 })
 
 app.get('/trends', (req, res) => {
-    res.render('trends')
+    res.render('trends', {
+      sidebar: 'Trends' 
+    });
 })
 
 // Start the server
