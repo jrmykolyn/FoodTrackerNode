@@ -378,6 +378,20 @@ body {
     z-index: 900;
   }
 
+  .trend-container {
+    display:flex;
+  }
+
+  .sidebar {
+    border:2px solid red;
+  }
+
+  .sidebar-item {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+    padding: 0.5rem 0.5rem;
+  }
   /* Add Animation */
   @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 

@@ -18,7 +18,12 @@
 </head>
 <body>
     <%- include('../public/header.html') %>
-    <%- include('../public/trends.html') %>
+    <div class="trend-container">
+        <%- include('partials/sidebar-t') %>
+        <%- include('../public/trends.html') %>
+    </div>
+
+    
     <!-- Point of this page is to check the trends around specific items - average price changes across stores etc. 
             get the categories going
             get the queries to average the price by weights out for these items
