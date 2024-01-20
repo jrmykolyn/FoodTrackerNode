@@ -54,13 +54,13 @@ async function getPriceCompare(id,foodname) {
     return rows;
 }
 async function getLatestPriceByCat(storeid,foodCatID) {
-    let query = `select f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, p.priceLink, p.priceDate, fc.fcatName from food_fcat ff 
-                join food f on
-                f.foodID = ff.foodID 
-                join price p on f.foodID = p.foodID
+    let query = `select f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, p.priceLink, p.priceDate, fc.fcatName from price p  
+                join food f on f.foodID = p.foodID
+                join food_fcat ff on
+                ff.foodID = f.foodID 
                 join fcat fc on
                 fc.fcatID = ff.fcatID 
-                where DATE_SUB(CURDATE(),INTERVAL 30 DAY) <= p.priceDate and p.priceDate = ( select max(priceDate) from price p2 where p.foodID = p2.foodID and p.storeID = p2.storeID) and
+                where DATE_SUB(CURDATE(),INTERVAL 14 DAY) <= p.priceDate and
                 p.storeID = ? and fc.fcatID = ?
                 group by f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, fc.fcatName, p.priceLink, p.priceDate
                 order by p.priceByWeight, priceDate desc`
