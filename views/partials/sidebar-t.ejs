@@ -36,7 +36,6 @@ function createSidebar(data) {
 <div class="sidebar">
     <h2 class="sidebar-title" style="display:none;"><%-sidebar%></h2>
 </div>
-<canvas id="myChart" style="padding:3rem;max-height:700px;"></canvas>
 
 <script>
 let sidebarType = document.querySelector(".sidebar-title");
@@ -61,8 +60,13 @@ if (new String(sidebarType.innerText) == "Trends") {
         },
         {   
             name:'Trends by Item', 
-            icon: 'bx-money',
+            icon: 'bxs-baguette',
             script: 'methodology'    
+        },                
+        {   
+            name:'Grocery Price Documents', 
+            icon: 'bxs-folder-open',
+            script: 'dataRepoLoad()'    
         },                
     ]
 }
@@ -72,6 +76,8 @@ if (new String(sidebarType.innerText) == "Trends") {
 
 
     function clearPage() {
+        let chart = document.querySelector("#myChart")
+        chart.style.display = "none";
         let page = document.querySelector(".trends-page")
         page.innerHTML = ""
     }
@@ -100,6 +106,7 @@ if (new String(sidebarType.innerText) == "Trends") {
             }
         );   
         const ctx = document.querySelector("#myChart")
+        ctx.style.display = "block";
         console.log(ctx)        
         new Chart(ctx, {
             type: 'line',
