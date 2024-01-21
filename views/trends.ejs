@@ -16,25 +16,13 @@
 <body>
     <%- include('../public/header.html') %>
     <div class="trend-container">
+        <!--Remove the flex property on trend container - make sidebar t floating so it overlaps when it grows 
+            make the animation slide the sidebar over instead of popping it -->
         <%- include('partials/sidebar-t') %>
         <%- include('../public/trends.html') %>
         <canvas id="myChart" style="padding:3rem;max-height:700px;display:none;"></canvas>
 
     </div>
-
-    
-    <!-- Point of this page is to check the trends around specific items - average price changes across stores etc. 
-            get the categories going
-            get the queries to average the price by weights out for these items
-    
-        LOAD ALL THE SCRIPTS HERE SO THAT THE SIDEBAR PARTIAL CAN ACCESS AS WELL AS THE TRENDS PAGE
-        REMOVE THE JAVASCRIPT FROM THE HTML PAGE AND HAVE IT SEPARATE IF POSSIBLE. 
-
-        WORST CASE PUT IT IN HERE 
-    
-    
-    
-        -->
 
 </body>
 </html>

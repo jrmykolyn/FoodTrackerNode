@@ -378,15 +378,13 @@ body {
     z-index: 900;
   }
 
-  .trend-container {
-    display:flex;
-  }
-
   /* Sidebar for Trends and Data */
 
   .sidebar {
     transition: width 0.3s;
     background-color: var(--hsr-ylw);
+    position: absolute;
+
   }
 
   .sidebar:hover {
@@ -416,6 +414,10 @@ body {
     animation: slideaway 1s;
   }
 
+  .trends-page {
+    margin: 0;
+    padding: 1rem;
+  }
   /* Add Animation */
 
   @keyframes grow {
