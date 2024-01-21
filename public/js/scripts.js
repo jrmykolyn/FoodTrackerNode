@@ -118,7 +118,7 @@ let categorySel = async function(storeid,foodStapleID) {
         */
 
         //add all elems to array to loop through and add to parent div
-        let foodItemArray = [foodName, foodPrice, foodPriceBW, foodLink, priceDate/*, priceHistAnchor, itemCheckLink*/]
+        let foodItemArray = [foodName, foodPrice, foodPriceBW, foodLink, priceDate, priceHistAnchor, /*itemCheckLink*/]
         let divsubArray = []
 
         foodItemArray.forEach((item) => {
@@ -166,9 +166,9 @@ let itemCheck = async function(foodID, storeID) {
         pricehistLink.classList.add('priceHistory');
         pricehistLink.innerText ="Store Price History"
         let priceHistAnchor = document.createElement('a')
-        /*priceHistAnchor.appendChild(pricehistLink)
+        priceHistAnchor.appendChild(pricehistLink)
         priceHistAnchor.href = `/pricehist?sid=${row.storeID}&fid=${row.foodID}&wt=${row.priceWeight}`;
-        */
+        
         //add all elems to array to loop through and add to parent div
         let foodItemArray = [storeName, foodName, foodPrice, foodPriceBW, foodLink, priceDate, priceHistAnchor]
         let divsubArray = []
@@ -193,47 +193,60 @@ function clearDiv() {
     let responseDiv = document.querySelector(".data_response")
     responseDiv.innerHTML = '';
 }
-
+//function needs to change to allow for an item split 
 let chartPush = async function(storeID,foodID,wt) { 
     const ctx = document.getElementById('myChart');
     const title = document.querySelector('.chartTitle');
     const responseChart = await axios.get(`/api/pricehistory/${storeID}/${foodID}`);
-    
-    let lineArray = []
-    // create set for all unique food Items
-    /*responseChart.data.forEach((elem) => {   
-        lineArray.push(elem.foodName); 
+    console.log(responseChart.data)
+    const itemsBW = Object.groupBy(responseChart.data, weight => weight.priceWeight);
+    console.log(itemsBW)
+    let itemsNum = Object.keys(itemsBW).length
+    let chartDataSet =[]
+    // if theres more than one weight per item in itemsBW, split them and display them by weight
+    for(let i =0; i<itemsNum; i++) {
+        console.log("values ",Object.values(itemsBW)[i])
+        console.log("keys ", Object.keys(itemsBW)[i])
+
+        let lineData =[]
+        Object.values(itemsBW)[i].forEach(elem => lineData.push({'x':elem.priceDate.slice(0,10),'y':elem.priceListing})) 
+        let newDataObj = {
+        label: Object.keys(itemsBW)[i],
+        data: lineData, //This is the price line
+        borderWidth: 1
+        } 
+        chartDataSet.push(newDataObj)
     }
-    );  
-    let extraLn = newSet(lineArray);*/
-    //with these unique foodNames, create multiple dataset objects 
-    /*function newObj(newSeries) {
-        let dataset = { 'name': newSeries, data: [], 'price': priceByWeight, 'priceDate':priceDate }
-        responseChart.data.forEach((elem) => {
-            
-        });
-    }*/
-    /*extraLn.forEach((elem) =>{
-        let newLnResp = axios.get(`/api/pricehistory/${foodID}`);
-    });*/
+    console.log(chartDataSet)
+    /*datasets: [{
+        label: "My First dataset",
+        fillColor: "rgba(220,220,220,0.5)",
+        strokeColor: "rgba(220,220,220,0.8)",
+        highlightFill: "rgba(220,220,220,0.75)",
+        highlightStroke: "rgba(220,220,220,1)",
+
+        data: [{x:1,y:10},{x:2,y:20},{x:4,y:30},{x:8,y:40}] // Note the structure change here!
+    }]*/
+    //date array should be new set 
+
     let priceArray = []
     let dateArray = []
     title.innerHTML = `Price History for ${responseChart.data[0].foodName} at ${responseChart.data[0].storeName}`
+    //Get all the date values for the x axis
     responseChart.data.forEach((elem) => 
         {   
-            priceArray.push(elem.priceListing); 
             dateArray.push(elem.priceDate.slice(0,10))
         }
     );   
+        // make dateArray a set so theres no duplicates 
+    let dateSet = new Set(dateArray)
+    console.log(dateSet)
+    dateArray = Array.from(dateSet);
     new Chart(ctx, {
         type: 'line',
         data: {
         labels: dateArray, //This is date
-        datasets: [{
-            label: `Price History - ${responseChart.data[0].foodName} - ${responseChart.data[0].storeName}`,
-            data: priceArray, //This is price
-            borderWidth: 1
-        }]
+        datasets: chartDataSet
         },
         options: {
         scales: {
