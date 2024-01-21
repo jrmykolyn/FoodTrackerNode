@@ -16,14 +16,16 @@ function createSidebar(data) {
         console.log(item)
         let newItem = document.createElement("div")
         newItem.classList.add("sidebar-item")
+        newItem.setAttribute('onclick', item.script)
         let icon = document.createElement("i")
         icon.classList.add("bx")
         icon.classList.add(item.icon)
         let itemTitle = document.createElement("div")
         itemTitle.innerText = item.name
         // append items create proper html hierarchy
-        newItem.appendChild(icon)
         newItem.appendChild(itemTitle)
+        newItem.appendChild(icon)
+
         // append completed item to sidebar
         sidebar.appendChild(newItem)
     })
@@ -32,8 +34,9 @@ function createSidebar(data) {
 
 </script>
 <div class="sidebar">
-    <h2 class="sidebar-title"><%-sidebar%></h2>
+    <h2 class="sidebar-title" style="display:none;"><%-sidebar%></h2>
 </div>
+<canvas id="myChart" style="padding:3rem;max-height:700px;"></canvas>
 
 <script>
 let sidebarType = document.querySelector(".sidebar-title");
@@ -66,4 +69,67 @@ if (new String(sidebarType.innerText) == "Trends") {
 
 
     createSidebar(trendArray)
+
+
+    function clearPage() {
+        let page = document.querySelector(".trends-page")
+        page.innerHTML = ""
+    }
+
+    function cpiChart() {
+        clearPage()
+        console.log("go")
+        let filepath = '../mapdata/statcan_cpi_food_vs_all.csv'
+        $.get(filepath, function(data) {
+                var csvdata = Papa.parse(data, {
+                            header: true,
+                            dynamicTyping: true
+                        });
+                csvdata.data.forEach((elem) => console.log(elem))        
+                //csvdata.forEach((elem) => console.log(elem));
+        // load chart data - CPI vs inflation
+        // create set for all unique food Items
+        let cpiFoodArray = []
+        let cpiTotalArray = []
+        let dateArray = []
+        csvdata.data.forEach((elem) => 
+            {   
+                dateArray.push(elem['Date']); 
+                cpiFoodArray.push(elem['Index for food purchased from stores']); 
+                cpiTotalArray.push(elem['All-items index'])
+            }
+        );   
+        const ctx = document.querySelector("#myChart")
+        console.log(ctx)        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+            labels: dateArray, //This is date
+            datasets:   [
+                            {
+                                label: `Food Price Index`,
+                                data: cpiFoodArray, //This is price
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'CPI All Items Index',
+                                data: cpiTotalArray,
+                                yAxisID: 'y',
+                            }
+                        ]
+            },
+            options: {
+            scales: {
+                y: {
+                beginAtZero: false
+                }
+            }
+            }
+        });
+        // create div, add class and append it to the .trends-page elem
+        // build chart.js 
+        // make chart responsive 
+
+        });    
+    }
 </script>

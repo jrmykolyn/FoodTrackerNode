@@ -385,8 +385,8 @@ body {
   /* Sidebar for Trends and Data */
 
   .sidebar {
-    border: 2px solid #c9c9c9;
     transition: width 0.3s;
+    background-color: var(--hsr-ylw);
   }
 
   .sidebar:hover {
@@ -398,6 +398,7 @@ body {
     gap: 0.5rem;
     flex-wrap: nowrap;
     padding: 0.5rem 0.5rem;
+    justify-content: space-between;
   }
 
   .sidebar-item:hover {
