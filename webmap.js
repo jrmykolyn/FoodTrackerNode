@@ -109,7 +109,7 @@ fetch('/api/stores')
                             icon: icon1,
                             opacity: 1,
                             className : `store${mk.storeID}`
-                        }).bindPopup("<h5 class='popup-title'> " + store + " - " + mk.storeName + "</h5>" +
+                        }).bindPopup("<h5 class='popup-title'> " + store + " " + mk.storeName + "</h5>" +
                                         "<div>Address: " +mk.storeAddress + "</div>" + 
                                         "<div>Postal Code: " + mk.storePostalCode +"</div>"+
                                         "<div class='storebtn' onclick='storeCategory(" +mk.storeID+ ")'>See Data</div>");
@@ -200,10 +200,6 @@ fetch('/api/stores')
                 let under1k =[]
                 let currentCoords = currentLocCirc.getLatLng()
                 markers.forEach(store => { 
-                    //let storesInBuf = points_within.pointsWithinPolygon([store.storeLon,store.storeLat],tBuffer)
-                    //console.log(storesInBuf)
-                    //+allPts.append([store.storeLon,store.storeLat])
-                    //let markDist = currentCoords.distanceTo([coordinates.latitude, coordinates.longitude], [store.storeLat,store.storeLon])
                     let storeCoords;
                     let dist
                     try {
@@ -240,7 +236,7 @@ fetch('/api/stores')
                 })
                 //console.log(allPts)
 
-                console.log("stores in your area:",under1k)
+                //console.log("stores in your area:",under1k)
                 //create a div that will list stores near you. grey out the ones with no data. allow you to compare the prices of items within the area 
                 let storeDataDiv = document.querySelector(".store_data_response")  
                 storeDataDiv.style.display = "block"

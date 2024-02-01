@@ -14624,7 +14624,7 @@ fetch('/api/stores')
                             icon: icon1,
                             opacity: 1,
                             className : `store${mk.storeID}`
-                        }).bindPopup("<h5 class='popup-title'> " + store + " - " + mk.storeName + "</h5>" +
+                        }).bindPopup("<h5 class='popup-title'> " + store + " " + mk.storeName + "</h5>" +
                                         "<div>Address: " +mk.storeAddress + "</div>" + 
                                         "<div>Postal Code: " + mk.storePostalCode +"</div>"+
                                         "<div class='storebtn' onclick='storeCategory(" +mk.storeID+ ")'>See Data</div>");

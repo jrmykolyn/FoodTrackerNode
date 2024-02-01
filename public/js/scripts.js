@@ -51,22 +51,19 @@ let storeCategory = async function(id) {
     let closeBtn = document.createElement('div');
     closeBtn.classList.add('close_btn');
     //get food staples set in mapdata/foodstaples.csv
-    $.get('/mapdata/staples-temp.csv', function(csvString) {
-        //let categories = ['Milk', 'Bananas', 'Eggs', 'Chicken', 'Bread'];
-        var data = Papa.parse(csvString, {header: true, dynamicTyping: true}).data;
-        let dataRows = data.length
-        data.forEach((cat) => {
-                if (cat.fcatName != null) {
+    const response = await axios.get(`/api/storecats/${id}`);
+
+    response.data.forEach((row) => {
+                if (row.fcatName != null) {
                     let div = document.createElement('div');
                     div.classList.add('foodItemCat');
-                    div.setAttribute("onclick", `categorySel(${id},'${cat.fcatID}')`)
-                    let foodName = document.createTextNode(cat.fcatName);
+                    div.setAttribute("onclick", `categorySel(${id},'${row.fcatID}')`)
+                    let foodName = document.createTextNode(row.fcatName);
                     let divsub = document.createElement('div');
                     divsub.appendChild(foodName)
                     div.appendChild(divsub)
                     responseDiv.appendChild(div);
                 }                
-        });
         //move where the data is placed on screen
         let resultH = window.innerHeight - 150
         let result = document.querySelector(".data_response")       

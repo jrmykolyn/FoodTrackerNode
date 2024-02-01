@@ -16,9 +16,20 @@
 <body>
     <%- include('../public/header.html') %>
     <div class="trend-container">
+        <!--Remove the flex property on trend container - make sidebar t floating so it overlaps when it grows 
+            make the animation slide the sidebar over instead of popping it -->
         <%- include('partials/sidebar-t') %>
-        <%- include('../public/trends.html') %>
+        <div class="trends-page">
+            <h2>Grocery Tracker Trends</h2>
+            <div style="text-align: center; padding:0 4rem;">Welcome to the Hoser Grocery Tracker's Data Visualizations portal.<br>
+                As our project becomes more robust, we will be posting findings from our data as well as information from StatCanada and our investigations here.
+                <br>Click on a link in the sidebar to get started.</div>
+            <div class="tableDiv">
+                <canvas id="myChart" style="max-height:700px;"></canvas>
+            </div>   
+        </div>
         <canvas id="myChart" style="padding:3rem;max-height:700px;display:none;"></canvas>
+
     </div>
 
 </body>

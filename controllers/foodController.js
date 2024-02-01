@@ -104,6 +104,20 @@ async function getSimilarFoods(req, res) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+async function getStoreCatList(req, res) {
+    let data = {
+        storeID: req.params.storeID
+    }
+    try {
+        const food = await foodModel.getStoreCatList(data['storeID']);
+        res.json(food);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
 
 module.exports = {
     getFood,
@@ -115,4 +129,5 @@ module.exports = {
     getPriceHistory,
     getLatestPriceByCat,
     getSimilarFoods,
+    getStoreCatList,
 };

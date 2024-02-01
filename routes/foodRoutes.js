@@ -23,4 +23,6 @@ router.get('/latestprice/:storeID/:foodCatID', foodController.getLatestPriceByCa
 
 router.get('/similarfood/:foodID/:storeID', foodController.getSimilarFoods);
 
+router.get('/storecats/:storeID', foodController.getStoreCatList);
+
 module.exports = router;

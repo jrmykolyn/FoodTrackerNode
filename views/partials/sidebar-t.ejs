@@ -2,7 +2,8 @@
 <script>
 //console.log(trendArray)
 
-function createSidebar(data) {
+
+function sidebarHeight() {
     let sidebar = document.querySelector(".sidebar")
     //find height of document
     const body = document.body;
@@ -11,7 +12,11 @@ function createSidebar(data) {
                      html.clientHeight, html.scrollHeight, html.offsetHeight);
     console.log(docH)
     sidebar.style.height = docH + 'px'
+    return sidebar
+}
 
+function createSidebar(data) {
+    let sidebar = sidebarHeight();
     data.forEach(item => {
         console.log(item)
         let newItem = document.createElement("div")
@@ -43,15 +48,21 @@ let sidebarType = document.querySelector(".sidebar-title");
 let trendArray = []
 if (new String(sidebarType.innerText) == "Trends") {
     trendArray = [
+
         {   
-            name:'Price History', 
-            icon: 'bx-history',
-            script: 'callHistory()'    
+            name:'Home', 
+            icon: 'bxs-home',
+            script: 'trendsHome()',
         },
         {   
             name:'Consumer Price Index', 
             icon: 'bx-trending-up',
-            script: 'cpiChart()'    
+            script: 'cpiChart()',    
+        },
+        /*{   
+            name:'Price History', 
+            icon: 'bx-history',
+            script: 'callHistory()'    
         },
         {   
             name:'Cheapest Staples', 
@@ -67,24 +78,56 @@ if (new String(sidebarType.innerText) == "Trends") {
             name:'Grocery Price Documents', 
             icon: 'bxs-folder-open',
             script: 'dataRepoLoad()'    
-        },                
+        },  */             
     ]
 }
 
 
-    createSidebar(trendArray)
+    createSidebar(trendArray);
+    window.addEventListener("resize", sidebarHeight(), true);
+
 
 
     function clearPage() {
-        let chart = document.querySelector("#myChart")
+        let chart = document.getElementById("myChart")
         chart.style.display = "none";
         let page = document.querySelector(".trends-page")
         page.innerHTML = ""
     }
 
+
+    function trendsHome() {
+        clearPage()
+        let page = document.querySelector(".trends-page")
+        const chartTitle = document.createElement("h2")
+        chartTitle.innerText = "Grocery Tracker Trends"
+        page.appendChild(chartTitle)
+        const chartText = document.createElement("div")
+        chartText.innerText =  `Welcome to the Hoser Grocery Tracker's Data Visualizations portal. 
+                                As our project becomes more robust, we will be posting findings from our data as well as information from StatCanada and our investigations here.
+                                Click on a link in the sidebar to get started.`       
+        chartText.style.padding = "0 4rem"
+        chartText.style.textAlign = "center"
+        page.appendChild(chartText)
+    }
+    trendsHome()
+
     function cpiChart() {
         clearPage()
-        console.log("go")
+        let page = document.querySelector(".trends-page")
+        const chartTitle = document.createElement("h2")
+        chartTitle.innerText = "CPI Food Prices vs. All Prices"
+        page.appendChild(chartTitle)
+        const chartText = document.createElement("div")
+        chartText.innerText =  `   The chart below compares the Consumer Price Index (CPI) for food items compared to the CPI for all items. The data was provided by StatCan. The CPI measures the overall increase in price for items.
+                                   From this data we can extrapolate a few things: 
+
+                                        1. Price inflation for food items has become closer to other items in recent months. This means the price increases are starting to stabilize.
+                                        2. From mid-2022 to mid-2023, food prices were increasing well over double the rate of other items
+
+                                    To be clear, the CPI for food items falling in line with the rest does not mean food will be getting cheaper. It just means that food prices will increase at the same rate as everything else.  `
+        chartText.style.padding = "0 4rem"
+        page.appendChild(chartText)
         let filepath = '../mapdata/statcan_cpi_food_vs_all.csv'
         $.get(filepath, function(data) {
                 var csvdata = Papa.parse(data, {
@@ -105,9 +148,8 @@ if (new String(sidebarType.innerText) == "Trends") {
                 cpiTotalArray.push(elem['All-items index'])
             }
         );   
-        const ctx = document.querySelector("#myChart")
+        const ctx = document.getElementById("myChart");
         ctx.style.display = "block";
-        console.log(ctx)        
         new Chart(ctx, {
             type: 'line',
             data: {
@@ -133,9 +175,7 @@ if (new String(sidebarType.innerText) == "Trends") {
             }
             }
         });
-        // create div, add class and append it to the .trends-page elem
-        // build chart.js 
-        // make chart responsive 
+
 
         });    
     }

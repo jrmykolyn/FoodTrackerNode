@@ -9,29 +9,33 @@ const db = {
   };
 
 const pool = mysql.createPool(db);
-
+//get all the stores in the db
 async function getAllStores() {
     const [rows] = await pool.query('SELECT * FROM store');
     return rows;
 }
+//get store data based on its ID  
 async function getStoreByID(id) {
     const [rows] = await pool.query('SELECT * FROM store where storeId = ?', [id]);
     return rows;
 }
+// get every single food item
 async function getAllFood() {
     const [rows] = await pool.query('SELECT * FROM food');
     return rows;
 }
+//get the last 100 prices from a store
 async function getStorePrices(id) {
     const [rows] = await pool.query('SELECT * FROM price p join food f on p.foodID = f.foodID where storeID = ? order by priceDate desc LIMIT 100', [id]);
     return rows;
 }
+// get the price of an individual item by store ID
 async function getStorePriceByName(id,foodname) {
     //const [rows] = await pool.query('SELECT * FROM price p join food f on p.foodID = f.foodID where storeID = ? and f.foodname like ? order by priceDate desc, priceListing asc', [id, `%${foodname}%`]);
     const [rows] = await pool.query('SELECT * FROM price p join food f on p.foodID = f.foodID where storeID = ? and f.foodname like ? order by priceDate desc, priceListing asc', [id, `%${foodname}%`]);
     return rows;
 }
-
+//get the price history of a specific item
 async function getPriceHistory(storeID,foodID) {
     const [rows] = await pool.query(`SELECT * FROM price p 
                                     join food f on p.foodID = f.foodID 
@@ -53,6 +57,7 @@ async function getPriceCompare(id,foodname) {
     const [rows] = await pool.query(query, [foodname, id]);
     return rows;
 }
+// get prices of food items under a specific category
 async function getLatestPriceByCat(storeid,foodCatID) {
     let query = `select f.foodID, f.foodName, p.storeID, f.foodBrandName, p.priceListing, p.priceByWeight, p.priceMetric, p.priceWeight, p.priceLink, p.priceDate, fc.fcatName from price p  
                 join food f on f.foodID = p.foodID
@@ -83,6 +88,16 @@ async function getSimilarFoods(foodID,storeID) {
     return rows;
 }
 
+async function getStoreCatList(storeID) {
+    let query = `select distinct fc.fcatName, fc.fcatID from fcat fc
+                join food_fcat f_c on fc.fcatID = f_c.fcatID 
+                join food f on f.foodID = f_c.foodID
+                join price p on p.foodID = f.foodID
+                where p.priceDate > '01/01/2024' and p.storeID = ?`
+    const [rows] = await pool.query(query, [storeID]);
+    return rows;
+}
+
 module.exports = {
     getAllStores, 
     getAllFood,
@@ -93,4 +108,5 @@ module.exports = {
     getPriceHistory,
     getLatestPriceByCat,
     getSimilarFoods,
+    getStoreCatList,
 }

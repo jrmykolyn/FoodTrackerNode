@@ -401,6 +401,7 @@ body {
 
   .sidebar-item:hover {
     backdrop-filter: brightness(0.9);
+    cursor: pointer;
   }
 
   .sidebar-item div {
