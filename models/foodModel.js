@@ -1,14 +1,5 @@
-const mysql = require('mysql2/promise');
-require('dotenv').config();
+const pool = require('./db');
 
-const db = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-  };
-
-const pool = mysql.createPool(db);
 //get all the stores in the db
 async function getAllStores() {
     const [rows] = await pool.query('SELECT * FROM store');
