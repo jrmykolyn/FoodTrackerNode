@@ -1,44 +1,66 @@
+const userDataModel = require('../models/userDataModel')
+
+
 async function inputUserData(req, res) {
-    /*  subID PK
-        subDate
-        subUser
-        subStoreID
+    console.log("req.body : ", req.body);
+    const {userID,storeID,foodData} = req.body
 
-
-        user_submit_data
-
-        usdID PK
-        subID FK
-        usdFoodName
-        usdFoodBrandName
-        usdPriceListing
-        usdPriceByWeight
-        usdWeight
-        usdMetric
-        usdAttach
-        usdApproved (t/f)
-    */
-    let data = {
-        id: req.params.id,
-        foodname: req.params.foodname
-    }
+    // date
+    const date = new Date()
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    
+    // format date for mysql ingestion
+    let currentDate = `${year}-${month}-${day}`;
     try {
-        const food = await foodModel.addUserSubmit(data['id'],data['foodname']);
-        res.json(food);
+        const usrSubmit1 = await userDataModel.addUserSubmit( currentDate, userID, storeID );
+        res.json(usrSubmit1);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+    console.log("second function fire here")
     try {
-        const usrData2 = await foodModel.addUserSubmitData(data['id'],data['foodname']);
-        res.json(usrData2);
+        const foodDataSubmit = foodData
+        console.log(foodDataSubmit)
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        console.error(error)
+        console.log("didn't work")
     }
-
 }
 
 module.exports = {
-    inputUserData
+    inputUserData,
 }
+
+
+    /*  subID PK
+        subDate
+        subUser                     	
+        subStoreID              storeID
+    user_submit_data
+        usdID PK
+        subID FK
+        usdFoodName             foodname
+        usdFoodBrandName        brandName
+        usdPriceListing         priceListing
+        usdPriceByWeight        priceByWeight
+        usdWeight               priceWeight
+        usdMetric               priceMetric
+        usdAttach
+        usdApproved (t/f)
+    
+    	
+    	
+    storeAddress	
+    priceSale	
+    	
+    	
+    	
+    	
+    priceLink	
+    priceDate
+
+    
+        */

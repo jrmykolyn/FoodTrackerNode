@@ -419,6 +419,19 @@ body {
     margin: 0;
     padding: 1rem;
   }
+
+  /* Web Form */
+  .food-grid:first-of-type {
+    margin-top: 3rem;
+  }
+  .food-row {
+    display: grid;
+    grid-gap:1rem;
+    grid-template-columns: repeat(auto-fill, minmax(186px, 1fr));
+  }
+
+
+
   /* Add Animation */
 
   @keyframes grow {
