@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify webmap.js -o public/js/webmap.js"
+    "build": "browserify webmap.js -o public/js/webmap.js",
+    "setup": "./scripts/setup.sh"
   },
   "keywords": [],
   "author": "",
