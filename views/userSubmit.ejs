@@ -6,73 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body style="overflow: auto;"">
     <%- include('../public/header.html') %>
 <h1>Form Submission Kensington Market Grocery Data Collection</h1>
 <!--<form action="http://www.localhost:3000/submit/data" method="POST">-->
-        <div>
+        <div class="form-container">
+          <div>
                 <label for="userID">userID</label>
                 <input id="userID" value="1" disabled />
-
             <label for="storeName">Store Name</label>
+            <!-- fetch the values here and print them as individual options -->
             <select id="storeID">
                 <option value="1">Perola's</option>
                 <option value="2">Global Cheese</option>
                 <option value="3">Sanagan's</option>
             </select>          
-        </div>
-        <!-- food Item row - needs to be able to be duplicated -->
-        <div class="food-grid">
-            <h3>Food items</h3>
-            <h4>item #</h4>
-            <div class="food-row">
-                <div>
-                    <label for="foodName">Food Item Name</label>
-                    <input name="foodName" id="foodName" placeholder="input food name"/>
-                  </div>
-                  <div>
-                    <label for="foodBrandName">Food Brand Name</label>
-                    <input name="foodBrandName" id="foodBrandName" placeholder="food brand name"/>
-                  </div>
-                  <div>
-                    <label for="priceListing">Listed Price</label>
-                    <input name="priceListing" id="priceListing" placeholder="input price of item" />
-                  </div>
-                  <div>
-                    <label for="priceByWeight">Price By Weight</label>
-                    <input name="priceByWeight" id="priceByWeight" placeholder="Price By Weight"/>
-                  </div>
-                  <div>
-                    <label for="priceWeight">Item Weight</label>
-                    <input name="priceWeight" id="priceWeight" placeholder="input price weight"/>
-                  </div>
-                  <div>
-                    <label for="priceMetric">Item Price Metric</label>
-                        <select id="priceMetric">
-                            <option value="each">each</option>
-                            <option value="g">g</option>
-                            <option value="100g">100g</option>
-                            <option value="lb">lb</option>
-                            <option value="kg">kg</option>
-                            <option value="ml">ml</option>
-                            <option value="L">L</option>
-                        </select>
-                   </div>
-                   <div>
-                        <label for="priceattach">Attach a photo of the price in store</label>
-                        <input type="file" id="priceattach" name="priceattach" accept="image/png, image/jpeg" />  
-                   </div>
-                </div>
-        </div>
-        <div>
-            <h3>Additional Data</h3>
-
-            <label for="attach">Attach an image of your receipt</label>
-            <input type="file" id="attach" name="attach" accept="image/png, image/jpeg" />     
-        </div>
-        <div>
-            <button onclick="submitForm()">Submit Data</button>
           </div>
+          <!-- food Item row - needs to be able to be duplicated -->
+          <div class="food-grid">
+              <h3>Food items</h3>
+              <div class="food-row">
+                <h4>Item 1</h4>
+                <div class="food-row-data">
+                    <div>
+                        <label for="foodName">Food Item Name</label>
+                        <input name="foodName" id="foodName" placeholder="input food name"/>
+                      </div>
+                      <div>
+                        <label for="foodBrandName">Food Brand Name</label>
+                        <input name="foodBrandName" id="foodBrandName" placeholder="food brand name"/>
+                      </div>
+                      <div>
+                        <label for="priceListing">Listed Price</label>
+                        <input name="priceListing" id="priceListing" placeholder="input price of item" />
+                      </div>
+                      <div>
+                        <label for="priceByWeight">Price By Weight</label>
+                        <input name="priceByWeight" id="priceByWeight" placeholder="Price By Weight"/>
+                      </div>
+                      <div>
+                        <label for="priceWeight">Item Weight</label>
+                        <input name="priceWeight" id="priceWeight" placeholder="input price weight"/>
+                      </div>
+                      <div>
+                        <label for="priceMetric">Item Price Metric</label>
+                            <select id="priceMetric">
+                                <option value="each">each</option>
+                                <option value="g">g</option>
+                                <option value="100g">100g</option>
+                                <option value="lb">lb</option>
+                                <option value="kg">kg</option>
+                                <option value="ml">ml</option>
+                                <option value="L">L</option>
+                            </select>
+                      </div>
+                      <div>
+                            <label for="priceattach">Attach a photo of the price in store</label>
+                            <input type="file" id="priceattach" name="priceattach" accept="image/png, image/jpeg" />  
+                      </div>
+                </div>
+
+        </div>
+      </div>
+
+        <div class="addRow" onclick="addFormItem()">+ Add Row</div>
+        <div class="remRow" onclick="removeFormItem()">- Remove Row</div>
+        <div>
+          <h3>Additional Data</h3>
+
+          <label for="attach">Attach an image of your receipt</label>
+          <input type="file" id="attach" name="attach" accept="image/png, image/jpeg" />     
+        </div>
+          <div>
+            <button class="submitBtn" onclick="submitForm()">Submit Data</button>
+          </div>
+        </div>    
+
       <!--</form>-->
 
       <script>
@@ -80,25 +89,52 @@
             const data = document.querySelectorAll("input")
             let metric = document.querySelector("#priceMetric")
             const storeID = document.querySelector("#storeID")
-            let foodItem = { 
-                'userID': data[0].value,
-                'storeID': storeID,
-                'foodName':data[1].value,
-                'foodBrandName':data[2].value,
-                'priceListing':data[3].value,
-                'priceByWeight':data[4].value,
-                'priceWeight':data[5].value,
-                'priceattachment':data[6].value,
-                'attachment':data[7].value,
+            let foodItem = {}
 
-            }
-            console.log(foodItem)
+            let foodDataRows = document.querySelectorAll(".food-row")
+            foodDataRows.forEach(row => 
+              foodItem['userID'] = row.value, 
+              foodItem['storeID'] = storeID,
+                  /*'foodName':row[1].value,
+                  'foodBrandName':row[2].value,
+                  'priceListing':row[3].value,
+                  'priceByWeight':row[4].value,
+                  'priceWeight':row[5].value,
+                  'priceattachment':row[6].value,
+                  'attachment':row[7].value,*/
+              console.log(row)
+            )
+            console.log(foodDataRows)
         }
+        function addFormItem() {
+          //duplicate a row and clean out the input values
+          const foodGrid = document.querySelector(".food-grid")
+          let orig = document.querySelector(".food-row")
+          let dupe = orig.cloneNode(true)
+          let dupeField = dupe.querySelectorAll("input")
+          dupeField.forEach(field => field.value="")
+          let itemNum = dupe.querySelector("h4")
+          let rowAmt = document.querySelectorAll(".food-row").length + 1
+          itemNum.textContent = `Item ${rowAmt}`
+          foodGrid.appendChild(dupe)
+        }
+
+        function removeFormItem() {
+          let foodRows = document.querySelectorAll(".food-row")
+          const foodArray = Array.from(foodRows);          
+          let lastRow = foodArray.slice(-1)
+          console.log(lastRow[0])
+          if(foodRows.length > 1)
+            lastRow[0].remove()
+        }
+
+
+
       </script>
 </body>
 </html>
 
-/*  subID PK
+<!--  subID PK
 subDate
 subUser                     	
 subStoreID              storeID
@@ -113,3 +149,4 @@ usdWeight               priceWeight
 usdMetric               priceMetric
 usdAttach
 usdApproved (t/f)
+-->
